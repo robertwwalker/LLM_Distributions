@@ -24,6 +24,13 @@ The directory `Final-Prompt-Results` contains [all the results](https://github.c
 
 [A sample prompt](./Final-Prompt-Results/Prompt-1.html)
 
+In each subdirectory, there are: 
+
+- a series of .qmd files containing Combiner.  These combine the input and output files [in jsonl format] with the original .RData files.
+- a series of .RData files with `Full` that represent the combined input, output and RData files.
+- a series of .RData files with an R random generation function that store the original calls and data.
+- a .R file containining Combiner that binds the rows of the Full data files.
+- Two sets of .jsonl files: output contains the OpenAI responses and -Call-Revised.jsonl contains the batch files sent to OpenAI.
 
 # References
 

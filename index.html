@@ -3137,6 +3137,14 @@ vertical-align: -.125em;
 <li>The <a href="./Final-Prompt-Results/0613/Complete.Analysis.html">0613 page</a></li>
 </ul>
 <p><a href="./Final-Prompt-Results/Prompt-1.html">A sample prompt</a></p>
+<p>In each subdirectory, there are:</p>
+<ul>
+<li>a series of .qmd files containing Combiner. These combine the input and output files [in jsonl format] with the original .RData files.</li>
+<li>a series of .RData files with <code>Full</code> that represent the combined input, output and RData files.</li>
+<li>a series of .RData files with an R random generation function that store the original calls and data.</li>
+<li>a .R file containining Combiner that binds the rows of the Full data files.</li>
+<li>Two sets of .jsonl files: output contains the OpenAI responses and -Call-Revised.jsonl contains the batch files sent to OpenAI.</li>
+</ul>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
