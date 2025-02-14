@@ -1,5 +1,5 @@
 ---
-title: "The LLM Distributions Project"
+title: "The performance of widely used language models tasked with identifying the distribution responsible for generating simulated data"
 author: "JE, TJ, RWW"
 bibliography: "bibliography.bib"
 nocite: |
@@ -15,6 +15,8 @@ format:
 ---
 
 # The Organization of the Website
+
+Eaglesmith, Justus, Tim Johnson, and Robert W. Walker.  2025.  *The performance of widely used language models tasked with identifying the distribution responsible for generating simulated data.*
 
 The directory `Final-Prompt-Results` contains [all the results](https://github.com/robertwwalker/LLM_Distributions/tree/main/Final-Prompt-Results).  They are organized hierarchically by model [0409-turbo, 0806, and 0613] and then by distribution.
 
