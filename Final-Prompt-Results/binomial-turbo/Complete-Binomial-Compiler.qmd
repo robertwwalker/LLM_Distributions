@@ -1,0 +1,68 @@
+---
+title: "Binomial Compiler"
+format: html
+---
+
+NB: The following is an after the fact summary.  I have not compiled the document as the bottleneck was always the interaction with OpenAI.  This merely summarizes the file order and invocations to repeat the experiment.
+
+# Generate the Data for Open AI
+
+```{r}
+library(quarto)
+quarto_render("General-Batch-Binomial-Final-5.qmd")
+quarto_render("General-Batch-Binomial-Final-10.qmd")
+quarto_render("General-Batch-Binomial-Final-20.qmd")
+quarto_render("General-Batch-Binomial-Final-40.qmd")
+```
+
+# Merge the Open AI Results
+
+```{r}
+quarto_render("Binomial-Combiner-015.qmd")
+quarto_render("Binomial-Combiner-025.qmd")
+quarto_render("Binomial-Combiner-035.qmd")
+quarto_render("Binomial-Combiner-045.qmd")
+quarto_render("Binomial-Combiner-055.qmd")
+quarto_render("Binomial-Combiner-065.qmd")
+quarto_render("Binomial-Combiner-075.qmd")
+quarto_render("Binomial-Combiner-085.qmd")
+quarto_render("Binomial-Combiner-095.qmd")
+quarto_render("Binomial-Combiner-01-10.qmd")
+quarto_render("Binomial-Combiner-02-10.qmd")
+quarto_render("Binomial-Combiner-03-10.qmd")
+quarto_render("Binomial-Combiner-04-10.qmd")
+quarto_render("Binomial-Combiner-05-10.qmd")
+quarto_render("Binomial-Combiner-06-10.qmd")
+quarto_render("Binomial-Combiner-07-10.qmd")
+quarto_render("Binomial-Combiner-08-10.qmd")
+quarto_render("Binomial-Combiner-09-10.qmd")
+quarto_render("Binomial-Combiner-01-20.qmd")
+quarto_render("Binomial-Combiner-02-20.qmd")
+quarto_render("Binomial-Combiner-03-20.qmd")
+quarto_render("Binomial-Combiner-04-20.qmd")
+quarto_render("Binomial-Combiner-05-20.qmd")
+quarto_render("Binomial-Combiner-06-20.qmd")
+quarto_render("Binomial-Combiner-07-20.qmd")
+quarto_render("Binomial-Combiner-08-20.qmd")
+quarto_render("Binomial-Combiner-09-20.qmd")
+quarto_render("Binomial-Combiner-01-40.qmd")
+quarto_render("Binomial-Combiner-02-40.qmd")
+quarto_render("Binomial-Combiner-03-40.qmd")
+quarto_render("Binomial-Combiner-04-40.qmd")
+quarto_render("Binomial-Combiner-05-40.qmd")
+quarto_render("Binomial-Combiner-06-40.qmd")
+quarto_render("Binomial-Combiner-07-40.qmd")
+quarto_render("Binomial-Combiner-08-40.qmd")
+quarto_render("Binomial-Combiner-09-40.qmd")
+```
+
+# Bind the Full.Binomial files together
+
+```{r}
+source("FInal-File-Binom-5-Combiner.R")
+source("FInal-File-Binom-10-Combiner.R")
+source("FInal-File-Binom-20-Combiner.R")
+source("FInal-File-Binom-40-Combiner.R")
+source("MergeBigBinomials.R")
+```
+

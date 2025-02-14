@@ -1,0 +1,33 @@
+---
+title: "Poisson Compiler"
+format: html
+---
+
+NB: The following is an after the fact summary.  I have not compiled the document as the bottleneck was always the interaction with OpenAI.  This merely summarizes the file order and invocations to repeat the experiment.
+
+# Generate the Data for Open AI
+
+```{r}
+library(quarto)
+quarto_render("General-Batch-Poisson-Final.qmd")
+```
+
+# Merge the Open AI Results
+
+```{r}
+quarto_render("Poisson-Combined-05.qmd")
+quarto_render("Poisson-Combined-1.qmd")
+quarto_render("Poisson-Combined-2.qmd")
+quarto_render("Poisson-Combined-3.qmd")
+quarto_render("Poisson-Combined-4.qmd")
+quarto_render("Poisson-Combined-5.qmd")
+quarto_render("Poisson-Combined-7.5.qmd")
+quarto_render("Poisson-Combined-10.qmd")
+```
+
+# Bind the Full.Poisson files together
+
+```{r}
+source("FInal-File-Poisson-Combiner.R")
+```
+

@@ -1,0 +1,31 @@
+---
+title: "Normal Compiler"
+format: html
+---
+
+NB: The following is an after the fact summary.  I have not compiled the document as the bottleneck was always the interaction with OpenAI.  This merely summarizes the file order and invocations to repeat the experiment.
+
+# Generate the Data for Open AI
+
+```{r}
+library(quarto)
+quarto_render("General-Batch-Normal-Final.qmd")
+```
+
+# Merge the Open AI Results
+
+```{r}
+quarto_render("Normal-Combiner01.qmd")
+quarto_render("Normal-Combiner05.qmd")
+quarto_render("Normal-Combiner51.qmd")
+quarto_render("Normal-Combiner55.qmd")
+quarto_render("Normal-CombinerM51.qmd")
+quarto_render("Normal-CombinerM55.qmd")
+```
+
+# Bind the Full.Normal files together
+
+```{r}
+source("FInal-File-Normal-Combiner.R")
+```
+

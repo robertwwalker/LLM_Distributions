@@ -1,0 +1,75 @@
+---
+title: "Complete Results Analysis"
+author: "Robert W. Walker"
+date: "01/27/2025"
+format:
+  html:
+     self-contained: true
+     theme: superhero
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.retina=3)
+library(tidyverse)
+```
+
+Each result should be identical in structure by design.
+
+```{r}
+load("Complete.Binomial.0409.RData")
+Complete.Binomial.0409$name <- "Binomial"
+Complete.Binomial.0409 <- Complete.Binomial.0409 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rbinom-"),"-",","),")",sep=""))
+load("CompleteGamma.0409.RData")
+Complete.Gamma.0409$name <- "Gamma"
+Complete.Gamma.0409 <- Complete.Gamma.0409 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rgamma-"),"-",","),")",sep=""))
+```
+
+
+```{r}
+load("Complete.Uniform.0409.RData")
+Complete.Uniform.0409$name <- "Uniform"
+Complete.Uniform.0409 <- Complete.Uniform.0409 |> mutate(Dist = paste0(name,"[",str_replace(str_remove(key, "runif-"),"-",","),"]",sep=""))
+load("CompleteBeta.0409.RData")
+Complete.Beta.0409$name <- "Beta"
+Complete.Beta.0409 <- Complete.Beta.0409 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rbeta-"),"-",","),")",sep=""))
+```
+
+```{r}
+load("CompletePoisson.0409.RData")
+Complete.Poisson.0409$name <- "Poisson"
+Complete.Poisson.0409 <- Complete.Poisson.0409 |> mutate(Dist = paste0(name,"(",str_remove(key, "rpois-"),")",sep=""))
+load("CompleteNormal.0409.RData")
+Complete.Normal.0409$name <- "Normal"
+Complete.Normal.0409 <- Complete.Normal.0409 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rnorm-"),"-",","),")",sep=""))
+load("CompleteChisq.0409.RData")
+Complete.Chisq.0409$name <- "Chi-square"
+Complete.Chisq.0409 <- Complete.Chisq.0409 |> mutate(Dist = paste0(name,"(",str_remove(key, "rchisq-"),")",sep=""))
+```
+
+
+```{r}
+load("CompleteLognormal.0409.RData")
+Complete.Lognormal.0409$name <- "Lognormal"
+Complete.Lognormal.0409 <- Complete.Lognormal.0409 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rlnorm-"),"-",","),")",sep=""))
+load("Complete.Geometric.0409.RData")
+Complete.Geometric.0409$name <- "Geometric"
+Complete.Geometric.0409 <- Complete.Geometric.0409 |> mutate(Dist = paste0(name,"(",str_remove(key, "rgeom-"),")",sep=""))
+Complete.Data.0409 <- dplyr::bind_rows(Complete.Beta.0409, Complete.Binomial.0409, Complete.Poisson.0409, Complete.Uniform.0409, Complete.Normal.0409,Complete.Chisq.0409,Complete.Gamma.0409,Complete.Geometric.0409, Complete.Lognormal.0409)
+Complete.Data.0409 <- Complete.Data.0409 |> rowwise() |> mutate(Size = length(data))
+Complete.Data.0409 <- Complete.Data.0409 |> mutate(Full.Dist = paste0(Dist,"-",Size),sep="")
+```
+
+
+## Tables
+
+```{r}
+table(Complete.Data.0409$Full.Dist)
+```
+
+```{r}
+save(Complete.Data.0409, file="Complete.Data.All.0409.RData")
+```
+
+```{r}
+table(Complete.Data.0409$body$model)
+```

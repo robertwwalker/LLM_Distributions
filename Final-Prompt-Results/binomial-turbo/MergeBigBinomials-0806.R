@@ -1,0 +1,6 @@
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial-0806/CompleteBinom.5.0806.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial-0806/CompleteBinom.10.0806.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial-0806/CompleteBinom.20.0806.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial-0806/CompleteBinom.40.0806.RData")
+Complete.Binomial.0806 <- dplyr::bind_rows(Complete.Binom.5.0806, Complete.Binom.10.0806, Complete.Binom.20.0806, Complete.Binom.40.0806)
+save(Complete.Binomial.0806, file="Complete.Binomial.0806.RData")

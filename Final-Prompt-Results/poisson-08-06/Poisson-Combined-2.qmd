@@ -1,0 +1,47 @@
+---
+title: "Poisson-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rpois-2.RData")
+```
+
+2. The queries
+
+```{r}
+Pois2Call <- stream_in(file("rpois-2-Call-Revised.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Pois2Result <- stream_in(file("rpois-2_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Pois.2.OpenAI <- left_join(Pois2Call,Pois2Result)
+Full.Pois.2 <- left_join(Pois2$params, Pois.2.OpenAI)
+```
+
+The file is saved as `Full.Pois.2.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Pois.2$Outcome <- map_chr(Pois2$params$iter, function(x) { unlist(Pois2Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Pois.2$Outcome)
+```
+
+```{r}
+save(Full.Pois.2, file="Full.Pois.2.RData")
+```
+

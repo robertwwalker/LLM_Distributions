@@ -1,0 +1,34 @@
+---
+title: "Gamma Compiler"
+format: html
+---
+
+NB: The following is an after the fact summary.  I have not compiled the document as the bottleneck was always the interaction with OpenAI.  This merely summarizes the file order and invocations to repeat the experiment.
+
+# Generate the Data for Open AI
+
+```{r}
+library(quarto)
+quarto_render("General-Batch-Gamma-Final.qmd")
+```
+
+# Merge the Open AI Results
+
+```{r}
+quarto_render("Gamma-Combiner12.qmd")
+quarto_render("Gamma-Combiner22.qmd")
+quarto_render("Gamma-Combiner32.qmd")
+quarto_render("Gamma-Combiner42.qmd")
+quarto_render("Gamma-Combiner52.qmd")
+quarto_render("Gamma-Combiner62.qmd")
+quarto_render("Gamma-Combiner72.qmd")
+quarto_render("Gamma-Combiner82.qmd")
+quarto_render("Gamma-Combiner92.qmd")
+```
+
+# Bind the Full.Gamma files together
+
+```{r}
+source("FInal-File-Gamma-Combiner.R")
+```
+

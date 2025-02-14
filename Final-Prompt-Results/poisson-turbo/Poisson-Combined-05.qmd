@@ -1,0 +1,47 @@
+---
+title: "Poisson-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rpois-0.5.RData")
+```
+
+2. The queries
+
+```{r}
+Pois05Call <- stream_in(file("rpois-0.5-Call-Revised.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Pois05Result <- stream_in(file("rpois-0.5_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Pois.05.OpenAI <- left_join(Pois05Call,Pois05Result)
+Full.Pois.0.5 <- left_join(Pois0.5$params, Pois.05.OpenAI)
+```
+
+The file is saved as `Full.Pois.0.5.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Pois.0.5$Outcome <- map_chr(Pois0.5$params$iter, function(x) { unlist(Pois05Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Pois.0.5$Outcome)
+```
+
+```{r}
+save(Full.Pois.0.5, file="Full.Pois.0.5.RData")
+```
+

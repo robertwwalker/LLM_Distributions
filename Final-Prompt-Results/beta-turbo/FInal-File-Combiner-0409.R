@@ -1,0 +1,7 @@
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/beta-turbo/Full.Beta.1.2.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/beta-turbo/Full.Beta.2.2.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/beta-turbo/Full.Beta.3.2.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/beta-turbo/Full.Beta.4.2.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/beta-turbo/Full.Beta.5.2.0409.RData")
+Complete.Beta.0409 <- dplyr::bind_rows(Full.Beta.1.2.0409, Full.Beta.2.2.0409, Full.Beta.3.2.0409, Full.Beta.4.2.0409, Full.Beta.5.2.0409)
+save(Complete.Beta.0409, file="CompleteBeta.0409.RData")

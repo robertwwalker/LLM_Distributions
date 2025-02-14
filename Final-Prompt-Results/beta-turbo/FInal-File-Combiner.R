@@ -1,0 +1,7 @@
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/beta/Full.Beta.1.2.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/beta/Full.Beta.2.2.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/beta/Full.Beta.3.2.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/beta/Full.Beta.4.2.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/beta/Full.Beta.5.2.RData")
+Complete.Beta <- bind_rows(Full.Beta.1.2, Full.Beta.2.2, Full.Beta.3.2, Full.Beta.4.2, Full.Beta.5.2)
+save(Complete.Beta, file="CompleteBeta.RData")

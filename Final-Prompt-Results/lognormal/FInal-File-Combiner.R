@@ -1,0 +1,6 @@
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/lognormal/Full.LNormal.0.1.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/lognormal/Full.LNormal.0.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/lognormal/Full.LNormal.5.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/lognormal/Full.LNormal.5.1.RData")
+Complete.Lognormal <- bind_rows(Full.LNormal.0.1, Full.LNormal.0.5, Full.LNormal.5.1, Full.LNormal.5.5)
+save(Complete.Lognormal, file="CompleteLognormal.RData")

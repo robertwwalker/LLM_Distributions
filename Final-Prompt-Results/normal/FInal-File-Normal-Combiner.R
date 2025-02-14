@@ -1,0 +1,8 @@
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.0.1.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.0.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.5.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.5.1.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.M5.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/normal/Full.Normal.M5.1.RData")
+Complete.Normal <- bind_rows(Full.Normal.0.1, Full.Normal.0.5, Full.Normal.5.1, Full.Normal.5.5, Full.Normal.M5.1, Full.Normal.M5.5)
+save(Complete.Normal, file="CompleteNormal.RData")

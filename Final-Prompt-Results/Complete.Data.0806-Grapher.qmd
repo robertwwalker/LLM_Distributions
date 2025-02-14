@@ -1,0 +1,25 @@
+---
+title: "A Graphic"
+format: html
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+load("./Complete.Data.All.0806.RData")
+Complete.Data.0806 <- Complete.Data.0806 |> mutate(Correct = as.character(name==Outcome))
+Complete.Data.0806 <- Complete.Data.0806 |> group_by(name) |> mutate(Pct.Correct = sum(Correct=="TRUE")/n()) |> ungroup()
+Complete.Data.0806 |> ggplot() + aes(x=name, y=Outcome) + geom_tile(aes(fill=Pct.Correct), alpha=0.4) + scale_fill_viridis_c(option="E")
+yHist <- Complete.Data.0806 |> ggplot() + aes(x=name) + geom_bar(aes(fill=Correct), position="fill", alpha=0.4) + theme_minimal() + scale_fill_viridis_d(option="E")
+xHist <- Complete.Data.0806 |> ggplot() + aes(x=Outcome) + geom_bar(aes(fill=Correct), position="fill", alpha=0.4) + theme_minimal() + scale_fill_viridis_d(option="E") + coord_flip()
+
+
+Complete.Data.0806 <- Complete.Data.0806 |> mutate(Correct = as.character(name==Outcome)) |> ggplot() + aes(x=name, y=Outcome) + 
+TS2 <- Complete.Data.0806 |> mutate(Correct = as.character(name==Outcome)) %$% table(name, Outcome) %>% data.frame() %>% group_by(name) %>% mutate(Count = sum(Freq)) %>% ungroup() |> mutate(Percent = round(Freq / Count, digits=3))
+```
+
+```{r}
+library(patchwork)
+library(ggside)
+
+```
+

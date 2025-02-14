@@ -1,0 +1,56 @@
+---
+title: "Normal-Results-Processor-0-5"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("Normal05ParamsWS.RData")
+```
+
+2. The queries
+
+```{r}
+Normal.0.5.Call <- stream_in(file("Normal-mu-0-sigma-5-Call-Rev.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Normal.0.5.Result <- stream_in(file("Normal-mu-0-sigma-5_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Normal.0.5.OpenAI <- left_join(Normal.0.5.Call, Normal.0.5.Result)
+Full.Normal.0.5 <- left_join(NormExp05$params, Normal.0.5.OpenAI)
+```
+
+The file is saved as `Full.Normal.0.5.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Normal.0.5$Outcome <- map_chr(NormExp05$params$iter, function(x) { unlist(Normal.0.5.Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Normal.0.5$Outcome)
+```
+
+About that `Skewness`.
+
+```{r}
+Full.Normal.0.5 %>% filter(Outcome=="Skewness")
+stem(Full.Normal.0.5$data[[477]])
+```
+
+The 14.2 is a rather unlikely value but not that unlikely.
+
+```{r}
+pnorm(14.2, 0, 5)
+```
+

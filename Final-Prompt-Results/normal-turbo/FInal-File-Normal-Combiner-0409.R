@@ -1,0 +1,8 @@
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.0.1.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.0.5.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.5.5.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.5.1.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.M5.5.0409.RData")
+load("~/Distribution_LLM_Reasearch/Final-Prompt-Results/normal-turbo/Full.Normal.M5.1.0409.RData")
+Complete.Normal.0409 <- dplyr::bind_rows(Full.Normal.0.1.0409, Full.Normal.0.5.0409, Full.Normal.5.1.0409, Full.Normal.5.5.0409, Full.Normal.M5.1.0409, Full.Normal.M5.5.0409)
+save(Complete.Normal.0409, file="CompleteNormal.0409.RData")

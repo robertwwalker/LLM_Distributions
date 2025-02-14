@@ -1,0 +1,220 @@
+---
+title: "Final General Batch File Preparation: Normal Example"
+author: "RWW"
+format: 
+   html:
+     embed-resources: true
+---
+
+This reflects changes in an email discussion on Friday, July 12, 2024.  It reduces the number of digits in summary statistics and cleans the prompt with line breaks, and such.
+
+```{r, warning=FALSE, message=FALSE, comment=TRUE}
+set.seed(1234657)
+library(jsonlite)
+library(purrr)
+library(tidyverse)
+library(reticulate)
+GPT.Call <- function(data, data_type = "discrete", iter, D.Call) {
+        # Calculate summary statistics
+        data_summary <- summary(data, digits = 4)
+        # Convert summary statistics to a data frame for easier manipulation
+        data_summary_df <- data.frame(Statistic = names(data_summary), Value = as.vector(data_summary))
+        
+        # Build the prompt text
+        intro_prompt <- paste("Below, I am going to provide you a stem-and-leaf-plot of a variable and the summary statistics for that variable. I would like you to tell me which distribution you think generated the data.", sep="")
+        
+        # Creating SLP
+        stem_plot_text <- capture.output(stem(data))
+        
+        # Including Data Type
+        type_prompt <- paste0("\nThe data type is: ", data_type, ".", sep="")
+        
+        summary_stats_text <- paste("Here are the summary statistics:",
+                                       paste(data_summary_df$Statistic, "=", data_summary_df$Value, collapse = "; "), type_prompt, 
+                                    sep=" ")
+        
+        end_prompt <- "Please use the above information to predict which distribution generated the data. Please do not provide an explanation in your response. Please only state the name of the distribution in one word. Do not include the word 'distribution' following the name of the predicted distribution. Indeed, please read your response after writing it and ensure that you only provide the name of the distribution in your response."
+        
+        # Combine all parts of the prompt
+        full_prompt <- paste(intro_prompt, paste(stem_plot_text, collapse = "\n"), summary_stats_text, end_prompt, sep="\n\n")
+        
+        # Define the system and user messages for the API request
+        system_message <- list(role = "system", content = "You are an expert in statistics and data science.")
+        user_message <- list(role = "user", content = full_prompt)
+          body = list(
+            model = "gpt-4-0613",
+            messages = list(system_message, user_message),
+            temperature = 0.5,
+            max_tokens = 150
+          )        
+
+toJSON(list(custom_id = D.Call, 
+            method="POST", 
+            url = "/v1/chat/completions", 
+            body=body), 
+       auto_unbox = TRUE
+       )
+}
+# To test, try something like: data_type can be omitted because it defaults to discrete
+# GPT.Call(rpois(10,2), iter=1, D.Call="rpois-2")
+# Expected Output is a {} json call.
+```
+
+```{r, comment=TRUE, echo=TRUE}
+Params.Data.Maker <- function(call, set.params, data_type = "discrete") {
+pnames <- names(set.params)
+# Set the key parameters
+n <- c(10,20,35,60,100)
+reps <- 100
+# Create a data.frame for all combinations of lambda, sample size, and repetition [of lambda sample size]
+params <- data.frame(
+  expand.grid(n, seq(1,reps,1))
+  )
+names(params) <- c("n","rep")
+params$iter <- 1:dim(params)[[1]] # Count total number of experiments to pass
+# Iterate over the number of rows and generate a vector of Poisson data given lambda and size; a tidy for-loop
+mini.params <- data.frame(n=params$n, set.params)
+params$data <- map(params$iter, 
+                   function(x) { 
+                     do.call(call, mini.params[x,]) 
+                     }
+                   )
+
+params$key <- paste0(call,"-",paste(set.params, collapse="-"), sep="")
+
+# Create a matching identifier for the one in GPT.Call.Poisson
+params$custom_id <- paste0(call,"-",paste(set.params, collapse="-"),"-request-",params$iter, 
+                           sep="")
+# Store, as a list, the iteration of GPT.Call for each experiment
+Call.List <- purrr::map(params$iter, 
+                        function(x) {
+                          GPT.Call(data=as.vector(params$data[x][[1]]),
+                                   data_type = data_type,
+                                           iter=params$iter[x], 
+                                           D.Call=params$custom_id[x])
+                          }
+                        )
+# This is fairly hacky.  Create the filename from call and set.params and then use a sink to capture prints of the GPT.Call function.  Because set.parms can be vector-valued, we need to collapse it.
+filename <- paste0(call,"-",paste(set.params, collapse="-"),"-Call-Revised.jsonl", 
+                   sep="")
+# Drop the calls to a text file as jsonl.
+sink(filename)
+for (i in 1:dim(params)[[1]]) {
+ print(GPT.Call(data=as.vector(params$data[i][[1]]), 
+                data_type = data_type,
+                        iter=params$iter[i], 
+                        D.Call = params$custom_id[i]))  
+}
+sink()
+# return the parameters and the set of calls.
+return(list(params=params, 
+            call=Call.List,
+            original.call = call,
+            params.list = set.params,
+            data_type = data_type)
+       )
+}
+# PoisExp1.6 <- Params.Data.Maker(call="rpois", set.params=list(lambda=1.6))
+```
+
+From the following, we need a few variants of normal.
+
+![Distributions](./../../Distributions-to-Add.png) 
+
+First invoke the function `Params.Data.Marker()` with `call="rnorm"` for the normal random variable function and then supply `set.params=data.frame(mean=0, sd=1)` and change the type to not discrete.
+
+## Normal(0,1)
+
+```{r}
+Normal01 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=0, sd=1), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Normal01, 
+     file=paste0(Normal01$original.call,"-",paste(Normal01$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Normal(0,5)
+
+```{r}
+Normal05 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=0, sd=5), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Normal05, 
+     file=paste0(Normal05$original.call,"-",paste(Normal05$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Normal(-5,1)
+
+```{r}
+NormalM51 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=-5, sd=1), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(NormalM51, 
+     file=paste0(NormalM51$original.call,"-",paste(NormalM51$params.list, collapse="-"),".RData", sep=""))
+```
+
+
+## Normal(-5,5)
+
+```{r}
+NormalM55 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=-5, sd=5), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(NormalM55, 
+     file=paste0(NormalM55$original.call,"-",paste(NormalM55$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Normal(5,1)
+
+```{r}
+Normal51 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=5, sd=1), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Normal51, 
+     file=paste0(Normal51$original.call,"-",paste(Normal51$params.list, collapse="-"),".RData", sep=""))
+```
+
+
+## Normal(5,5)
+
+```{r}
+Normal55 <- Params.Data.Maker(call="rnorm", set.params=data.frame(mean=5, sd=5), data_type = "not discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Normal55, 
+     file=paste0(Normal55$original.call,"-",paste(Normal55$params.list, collapse="-"),".RData", sep=""))
+```
+
+
+In RStudio, if you press the play button for the above, you will find a jsonl file and the object saved as an RData file in addition to the local object.  The following could, if eval=TRUE drop that batch to OpenAI and start it [using python] so long as OpenAI is installed in the python environment and the `batch_input_file` and metadata are adjusted [not required but good practice in the metadata].  
+
+```{python, eval=FALSE}
+from openai import OpenAI
+client = OpenAI()
+client.batches.list(limit=10)
+batch_input_file = client.files.create(file=open("rnorm-0-1-Call-Revised.jsonl", "rb"), purpose = "batch")
+batch_input_file_id = batch_input_file.id
+client.batches.create(input_file_id = batch_input_file_id, endpoint = "/v1/chat/completions", completion_window="24h", metadata = {"description":"normal [0,1]"})
+```
+
+```
+content = client.files.content("file-xyz123") # filename given by return of batch object
+```

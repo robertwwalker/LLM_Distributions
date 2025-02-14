@@ -1,0 +1,48 @@
+---
+title: "Gamma-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rgamma-9-2.RData")
+Gamma92 <- gamma92 
+```
+
+2. The queries
+
+```{r}
+Gamma92Call <- stream_in(file("rgamma-9-2-Call-Revised.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Gamma92Result <- stream_in(file("rgamma-9-2_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Gamma.9.2.OpenAI <- left_join(Gamma92Call,Gamma92Result)
+Full.Gamma.9.2 <- left_join(Gamma92$params, Gamma.9.2.OpenAI)
+```
+
+The file is saved as `Full.Gamma.9.2.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Gamma.9.2$Outcome <- map_chr(Gamma92$params$iter, function(x) { unlist(Gamma92Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Gamma.9.2$Outcome)
+```
+
+```{r}
+save(Full.Gamma.9.2, file="Full.Gamma.9.2.RData")
+```
+

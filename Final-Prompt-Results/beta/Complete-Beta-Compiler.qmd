@@ -1,0 +1,30 @@
+---
+title: "Beta Compiler"
+format: html
+---
+
+NB: The following is an after the fact summary.  I have not compiled the document as the bottleneck was always the interaction with OpenAI.  This merely summarizes the file order and invocations to repeat the experiment.
+
+# Generate the Data for Open AI
+
+```{r}
+library(quarto)
+quarto_render("General-Batch-Beta-Final.qmd")
+```
+
+# Merge the Open AI Results
+
+```{r}
+quarto_render("Beta-Combined12.qmd")
+quarto_render("Beta-Combined22.qmd")
+quarto_render("Beta-Combined32.qmd")
+quarto_render("Beta-Combined42.qmd")
+quarto_render("Beta-Combined52.qmd")
+```
+
+# Bind the Full.Beta files together
+
+```{r}
+source("Final-File-Combiner.R")
+```
+

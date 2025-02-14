@@ -1,0 +1,47 @@
+---
+title: "Chisq-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rchisq-3.RData")
+```
+
+2. The queries
+
+```{r}
+Chisq3Call <- stream_in(file("rchisq-3-Call-Revised-0806.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Chisq3Result <- stream_in(file("rchisq-3_0806_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Chisq.3.OpenAI <- left_join(Chisq3Call,Chisq3Result)
+Full.Chisq.3.0806 <- left_join(Chisq3$params, Chisq.3.OpenAI)
+```
+
+The file is saved as `Full.Chisq.3.0806.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Chisq.3.0806$Outcome <- map_chr(Chisq3$params$iter, function(x) { unlist(Chisq3Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Chisq.3.0806$Outcome)
+```
+
+```{r}
+save(Full.Chisq.3.0806, file="Full.Chisq.3.0806.RData")
+```
+

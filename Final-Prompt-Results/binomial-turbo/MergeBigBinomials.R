@@ -1,0 +1,6 @@
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial/CompleteBinom.5.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial/CompleteBinom.10.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial/CompleteBinom.20.RData")
+load("~/Desktop/Distribution_LLM_Reasearch/Final-Prompt-Results/binomial/CompleteBinom.40.RData")
+Complete.Binomial <- dplyr::bind_rows(Complete.Binom.5, Complete.Binom.10, Complete.Binom.20, Complete.Binom.40)
+save(Complete.Binomial, file="Complete.Binomial.RData")

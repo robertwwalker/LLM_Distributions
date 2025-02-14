@@ -1,0 +1,8 @@
+load("Full.LNormal.0.1.0806.RData")
+load("Full.LNormal.0.5.0806.RData")
+load("Full.LNormal.5.5.0806.RData")
+load("Full.LNormal.5.1.0806.RData")
+load("Full.LNormal.M5.5.0806.RData")
+load("Full.LNormal.M5.1.0806.RData")
+Complete.Lognormal.0806 <- dplyr::bind_rows(Full.LNormal.0.1.0806, Full.LNormal.0.5.0806, Full.LNormal.M5.1.0806, Full.LNormal.M5.5.0806, Full.LNormal.5.1.0806, Full.LNormal.5.5.0806)
+save(Complete.Lognormal.0806, file="CompleteLognormal.0806.RData")

@@ -1,0 +1,47 @@
+---
+title: "Beta-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rbeta-2-2.RData")
+```
+
+2. The queries
+
+```{r}
+Beta22Call <- stream_in(file("rbeta-2-2-Call-Revised-0409.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Beta22Result <- stream_in(file("rbeta-2-2_0409_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Beta.2.2.OpenAI <- left_join(Beta22Call,Beta22Result)
+Full.Beta.2.2.0409 <- left_join(Beta22$params, Beta.2.2.OpenAI)
+```
+
+The file is saved as `Full.Beta.2.2.0409.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Beta.2.2.0409$Outcome <- map_chr(Beta22$params$iter, function(x) { unlist(Beta22Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Beta.2.2.0409$Outcome)
+```
+
+```{r}
+save(Full.Beta.2.2.0409, file="Full.Beta.2.2.0409.RData")
+```
+

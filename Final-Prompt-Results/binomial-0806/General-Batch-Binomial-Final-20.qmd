@@ -1,0 +1,257 @@
+---
+title: "Final General Batch File Preparation: Binomial Example"
+author: "RWW"
+format: 
+   html:
+     embed-resources: true
+---
+
+This reflects changes in an email discussion on Friday, July 12, 2024.  It reduces the number of digits in summary statistics and cleans the prompt with line breaks, and such.
+
+```{r, warning=FALSE, message=FALSE, comment=TRUE}
+set.seed(1234657)
+library(jsonlite)
+library(purrr)
+library(tidyverse)
+library(reticulate)
+GPT.Call <- function(data, data_type = "discrete", iter, D.Call) {
+        # Calculate summary statistics
+        data_summary <- summary(data, digits = 4)
+        # Convert summary statistics to a data frame for easier manipulation
+        data_summary_df <- data.frame(Statistic = names(data_summary), Value = as.vector(data_summary))
+        
+        # Build the prompt text
+        intro_prompt <- paste("Below, I am going to provide you a stem-and-leaf-plot of a variable and the summary statistics for that variable. I would like you to tell me which distribution you think generated the data.", sep="")
+        
+        # Creating SLP
+        stem_plot_text <- capture.output(stem(data))
+        
+        # Including Data Type
+        type_prompt <- paste0("\nThe data type is: ", data_type, ".", sep="")
+        
+        summary_stats_text <- paste("Here are the summary statistics:",
+                                       paste(data_summary_df$Statistic, "=", data_summary_df$Value, collapse = "; "), type_prompt, 
+                                    sep=" ")
+        
+        end_prompt <- "Please use the above information to predict which distribution generated the data. Please do not provide an explanation in your response. Please only state the name of the distribution in one word. Do not include the word 'distribution' following the name of the predicted distribution. Indeed, please read your response after writing it and ensure that you only provide the name of the distribution in your response."
+        
+        # Combine all parts of the prompt
+        full_prompt <- paste(intro_prompt, paste(stem_plot_text, collapse = "\n"), summary_stats_text, end_prompt, sep="\n\n")
+        
+        # Define the system and user messages for the API request
+        system_message <- list(role = "system", content = "You are an expert in statistics and data science.")
+        user_message <- list(role = "user", content = full_prompt)
+          body = list(
+            model = "gpt-4-0613",
+            messages = list(system_message, user_message),
+            temperature = 0.5,
+            max_tokens = 150
+          )        
+
+toJSON(list(custom_id = D.Call, 
+            method="POST", 
+            url = "/v1/chat/completions", 
+            body=body), 
+       auto_unbox = TRUE
+       )
+}
+# To test, try something like: data_type can be omitted because it defaults to discrete
+# GPT.Call(rpois(10,2), iter=1, D.Call="rpois-2")
+# Expected Output is a {} json call.
+```
+
+```{r, comment=TRUE, echo=TRUE}
+Params.Data.Maker <- function(call, set.params, data_type = "discrete") {
+pnames <- names(set.params)
+# Set the key parameters
+n <- c(10,20,35,60,100)
+reps <- 100
+# Create a data.frame for all combinations of lambda, sample size, and repetition [of lambda sample size]
+params <- data.frame(
+  expand.grid(n, seq(1,reps,1))
+  )
+names(params) <- c("n","rep")
+params$iter <- 1:dim(params)[[1]] # Count total number of experiments to pass
+# Iterate over the number of rows and generate a vector of Poisson data given lambda and size; a tidy for-loop
+mini.params <- data.frame(n=params$n, set.params)
+params$data <- map(params$iter, 
+                   function(x) { 
+                     do.call(call, mini.params[x,]) 
+                     }
+                   )
+
+params$key <- paste0(call,"-",paste(set.params, collapse="-"), sep="")
+
+# Create a matching identifier for the one in GPT.Call.Poisson
+params$custom_id <- paste0(call,"-",paste(set.params, collapse="-"),"-request-",params$iter, 
+                           sep="")
+# Store, as a list, the iteration of GPT.Call for each experiment
+Call.List <- purrr::map(params$iter, 
+                        function(x) {
+                          GPT.Call(data=as.vector(params$data[x][[1]]),
+                                   data_type = data_type,
+                                           iter=params$iter[x], 
+                                           D.Call=params$custom_id[x])
+                          }
+                        )
+# This is fairly hacky.  Create the filename from call and set.params and then use a sink to capture prints of the GPT.Call function.  Because set.parms can be vector-valued, we need to collapse it.
+filename <- paste0(call,"-",paste(set.params, collapse="-"),"-Call-Revised.jsonl", 
+                   sep="")
+# Drop the calls to a text file as jsonl.
+sink(filename)
+for (i in 1:dim(params)[[1]]) {
+ print(GPT.Call(data=as.vector(params$data[i][[1]]), 
+                data_type = data_type,
+                        iter=params$iter[i], 
+                        D.Call = params$custom_id[i]))  
+}
+sink()
+# return the parameters and the set of calls.
+return(list(params=params, 
+            call=Call.List,
+            original.call = call,
+            params.list = set.params,
+            data_type = data_type)
+       )
+}
+# PoisExp1.6 <- Params.Data.Maker(call="rpois", set.params=list(lambda=1.6))
+```
+
+From the following, we need a few variants of Poisson.
+
+![Distributions](./../../Distributions-to-Add.png) 
+
+First invoke the function `Params.Data.Marker()` with `call="rbinom"` for the poisson random variable function and then supply `set.params=data.frame()` and keep a discrete type.
+
+## Binomial(0.1, 20)
+
+```{r}
+Binom0.1.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.1, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.1.20, 
+     file=paste0(Binom0.1.20$original.call,"-",paste(Binom0.1.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.2, 20)
+
+```{r}
+Binom0.2.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.2, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.2.20, 
+     file=paste0(Binom0.2.20$original.call,"-",paste(Binom0.2.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+
+## Binomial(0.3, 20)
+
+```{r}
+Binom0.3.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.3, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.3.20, 
+     file=paste0(Binom0.3.20$original.call,"-",paste(Binom0.3.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.4, 20)
+
+```{r}
+Binom0.4.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.4, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.4.20, 
+     file=paste0(Binom0.4.20$original.call,"-",paste(Binom0.4.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.5, 20)
+
+```{r}
+Binom0.5.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.5, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.5.20, 
+     file=paste0(Binom0.5.20$original.call,"-",paste(Binom0.5.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.6, 20)
+
+```{r}
+Binom0.6.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.6, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.6.20, 
+     file=paste0(Binom0.6.20$original.call,"-",paste(Binom0.6.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.7, 20)
+
+```{r}
+Binom0.7.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.7, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.7.20, 
+     file=paste0(Binom0.7.20$original.call,"-",paste(Binom0.7.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.8, 20)
+
+```{r}
+Binom0.8.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.8, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.8.20, 
+     file=paste0(Binom0.8.20$original.call,"-",paste(Binom0.8.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+## Binomial(0.9, 20)
+
+```{r}
+Binom0.9.20 <- Params.Data.Maker(call="rbinom", set.params=data.frame(prob=0.9, size=20), data_type = "discrete")
+```
+
+Now let me save the workspace object containing the output.
+
+```{r}
+save(Binom0.9.20, 
+     file=paste0(Binom0.9.20$original.call,"-",paste(Binom0.9.20$params.list, collapse="-"),".RData", sep=""))
+```
+
+In RStudio, if you press the play button for the above, you will find a jsonl file and the object saved as an RData file in addition to the local object.  The following could, if eval=TRUE drop that batch to OpenAI and start it [using python] so long as OpenAI is installed in the python environment and the `batch_input_file` and metadata are adjusted [not required but good practice in the metadata].  
+
+```{python, eval=FALSE}
+from openai import OpenAI
+client = OpenAI()
+client.batches.list(limit=10)
+batch_input_file = client.files.create(file=open("rpois-1-Call-Rev.jsonl", "rb"), purpose = "batch")
+batch_input_file_id = batch_input_file.id
+client.batches.create(input_file_id = batch_input_file_id, endpoint = "/v1/chat/completions", completion_window="24h", metadata = {"description":"poisson [1]"})
+```
+
+```
+content = client.files.content("file-xyz123") # filename given by return of batch object
+```

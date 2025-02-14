@@ -1,0 +1,47 @@
+---
+title: "Uniform-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("runif-0-9.RData")
+```
+
+2. The queries
+
+```{r}
+Unif09Call <- stream_in(file("runif-0-9-Call-Revised.jsonl"))
+```
+
+9. The Results
+
+```{r}
+Unif09Result <- stream_in(file("runif-0-9_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Unif.0.9.OpenAI <- left_join(Unif09Call,Unif09Result)
+Full.Unif.0.9 <- left_join(Unif09$params, Unif.0.9.OpenAI)
+```
+
+The file is saved as `Full.Unif.0.9.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Unif.0.9$Outcome <- map_chr(Unif09$params$iter, function(x) { unlist(Unif09Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Unif.0.9$Outcome)
+```
+
+```{r}
+save(Full.Unif.0.9, file="Full.Unif.0.9.RData")
+```
+

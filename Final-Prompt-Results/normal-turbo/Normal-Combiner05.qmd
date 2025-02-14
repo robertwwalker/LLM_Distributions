@@ -1,0 +1,47 @@
+---
+title: "Normal-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rnorm-0-5.RData")
+```
+
+2. The queries
+
+```{r}
+Norm05Call <- stream_in(file("rnorm-0-5-Call-Revised.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Norm05Result <- stream_in(file("rnorm-0-5_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Normal.0.5.OpenAI <- left_join(Norm05Call,Norm05Result)
+Full.Normal.0.5 <- left_join(Normal05$params, Normal.0.5.OpenAI)
+```
+
+The file is saved as `Full.Normal.0.5.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Normal.0.5$Outcome <- map_chr(Normal05$params$iter, function(x) { unlist(Norm05Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Normal.0.5$Outcome)
+```
+
+```{r}
+save(Full.Normal.0.5, file="Full.Normal.0.5.RData")
+```
+

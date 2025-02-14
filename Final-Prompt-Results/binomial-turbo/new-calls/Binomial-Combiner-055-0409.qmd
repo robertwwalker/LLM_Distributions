@@ -1,0 +1,47 @@
+---
+title: "Binomial 5 Results Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("../rbinom-0.5-5.RData")
+```
+
+2. The queries
+
+```{r}
+Binom0.5.5Call <- stream_in(file("rbinom-0.5-5-Call-Revised-0409.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Binom0.5.5Result <- stream_in(file("rbinom-0.5-5_0409_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Binom.05.5.OpenAI <- left_join(Binom0.5.5Call,Binom0.5.5Result)
+Full.Binom.05.5.0409 <- left_join(Binom0.5.5$params, Binom.05.5.OpenAI)
+```
+
+The file is saved as `Full.Binom.05.5.0409.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Binom.05.5.0409$Outcome <- map_chr(Binom0.5.5$params$iter, function(x) { unlist(Binom0.5.5Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Binom.05.5.0409$Outcome)
+```
+
+```{r}
+save(Full.Binom.05.5.0409, file="Full.Binom.05.5.0409.RData")
+```
+
