@@ -38,7 +38,7 @@ In each subdirectory, there are:
 
 Taking the example of the beta distribution, there are three sets of results.
 
-For `gpt-40-2024-08-06`:
+For `gpt-4o-2024-08-06`:
 
 The results are combined in:  
 
@@ -69,6 +69,8 @@ The results are combined in:
 + [Beta(5,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner52-0409.html)
 
 Other results follow an identical pattern substituting the names of the distributions and parameters relevant in the given case, e.g. `Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner52-0409.html` becomes `Final-Prompt-Results/0409-turbo/poisson-turbo/Poisson-Combined-5-0409.html`
+
+As the files make clear, the keys for merging the batch results and the batch queries are the unique-id's that we assign for each distribution/parameter/iteration.
 
 # References
 
