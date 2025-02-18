@@ -34,6 +34,42 @@ In each subdirectory, there are:
 - a .R file containining Combiner that binds the rows of the Full data files.
 - Two sets of .jsonl files: output contains the OpenAI responses and -Call-Revised.jsonl contains the batch files sent to OpenAI.
 
+## Details
+
+Taking the example of the beta distribution, there are three sets of results.
+
+For `gpt-40-2024-08-06`:
+
+The results are combined in:  
+
++ [Beta(1,2)](Final-Prompt-Results/0806/beta-08-06/Beta-Combiner12-0806.html)
++ [Beta(2,2)](Final-Prompt-Results/0806/beta-08-06/Beta-Combiner22-0806.html)
++ [Beta(3,2)](Final-Prompt-Results/0806/beta-08-06/Beta-Combiner32-0806.html)
++ [Beta(4,2)](Final-Prompt-Results/0806/beta-08-06/Beta-Combiner42-0806.html)
++ [Beta(5,2)](Final-Prompt-Results/0806/beta-08-06/Beta-Combiner52-0806.html)
+
+For `gpt-4-0613`:
+
+The results are combined in:  
+
++ [Beta(1,2)](Final-Prompt-Results/0613/beta/Beta-Combiner12.html)
++ [Beta(2,2)](Final-Prompt-Results/0613/beta/Beta-Combiner22.html)
++ [Beta(3,2)](Final-Prompt-Results/0613/beta/Beta-Combiner32.html)
++ [Beta(4,2)](Final-Prompt-Results/0613/beta/Beta-Combiner42.html)
++ [Beta(5,2)](Final-Prompt-Results/0613/beta/Beta-Combiner52.html)
+
+For `gpt-4-turbo-2024-04-09`:
+
+The results are combined in:  
+
++ [Beta(1,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner12-0409.html)
++ [Beta(2,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner22-0409.html)
++ [Beta(3,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner32-0409.html)
++ [Beta(4,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner42-0409.html)
++ [Beta(5,2)](Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner52-0409.html)
+
+Other results follow an identical pattern substituting the names of the distributions and parameters relevant in the given case, e.g. `Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner52-0409.html` becomes `Final-Prompt-Results/0409-turbo/poisson-turbo/Poisson-Combined-5-0409.html`
+
 # References
 
 ```{r}
