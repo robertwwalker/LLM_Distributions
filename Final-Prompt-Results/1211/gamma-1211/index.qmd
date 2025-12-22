@@ -1,0 +1,23 @@
+---
+title: "Gamma - 1211"
+format: html
+---
+
+# Gamma
+
+```{r}
+library(gt)
+load("CompleteGamma.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Gamma.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Gamma.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

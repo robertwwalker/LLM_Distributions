@@ -1,0 +1,23 @@
+---
+title: "Normal - 1211"
+format: html
+---
+
+# Poisson 
+
+```{r}
+library(gt)
+load("CompleteNormal.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Normal.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Normal.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

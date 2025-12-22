@@ -1,0 +1,23 @@
+---
+title: "Chi-square - 1211"
+format: html
+---
+
+# $\chi^2$
+
+```{r}
+library(gt)
+load("CompleteChisq.1211.RData")
+```
+
+## By Size
+
+```{r}
+Complete.Chisq.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Chisq.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

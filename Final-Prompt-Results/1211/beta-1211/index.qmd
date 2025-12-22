@@ -1,0 +1,23 @@
+---
+title: "Beta - 1211"
+format: html
+---
+
+# Beta
+
+```{r}
+library(gt)
+load("CompleteBeta.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Beta.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Beta.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

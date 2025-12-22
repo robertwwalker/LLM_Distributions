@@ -1,0 +1,7 @@
+load("Full.Beta.1.2.1211.RData")
+load("Full.Beta.2.2.1211.RData")
+load("Full.Beta.3.2.1211.RData")
+load("Full.Beta.4.2.1211.RData")
+load("Full.Beta.5.2.1211.RData")
+Complete.Beta.1211 <- bind_rows(Full.Beta.1.2, Full.Beta.2.2, Full.Beta.3.2, Full.Beta.4.2, Full.Beta.5.2)
+save(Complete.Beta.1211, file="CompleteBeta.1211.RData")

@@ -1,0 +1,23 @@
+---
+title: "Uniform - 1211"
+format: html
+---
+
+# Uniform 
+
+```{r}
+library(gt)
+load("Complete.Uniform.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Uniform.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Uniform.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```
