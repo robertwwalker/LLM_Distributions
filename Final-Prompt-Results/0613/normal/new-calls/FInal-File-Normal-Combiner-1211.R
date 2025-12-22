@@ -1,0 +1,8 @@
+load("Full.Normal.0.1.1211.RData")
+load("Full.Normal.0.5.1211.RData")
+load("Full.Normal.5.5.1211.RData")
+load("Full.Normal.5.1.1211.RData")
+load("Full.Normal.M5.5.1211.RData")
+load("Full.Normal.M5.1.1211.RData")
+Complete.Normal.1211 <- bind_rows(Full.Normal.0.1.1211, Full.Normal.0.5.1211, Full.Normal.5.1.1211, Full.Normal.5.5.1211, Full.Normal.M5.1.1211, Full.Normal.M5.5.1211)
+save(Complete.Normal.1211, file="CompleteNormal.1211.RData")

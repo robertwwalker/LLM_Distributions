@@ -16,13 +16,13 @@ load("rgeom-0.1.RData")
 2. The queries
 
 ```{r}
-Geom01Call <- stream_in(file("rgeom-0.1-Call-Revised.jsonl"))
+Geom01Call <- stream_in(file("rgeom-0.1-Call-Revised-1211.jsonl"))
 ```
 
 3. The Results
 
 ```{r}
-Geom01Result <- stream_in(file("rgeom-0.1_output.jsonl"))
+Geom01Result <- stream_in(file("rgeom-0.1-1211_output.jsonl"))
 ```
 
 ## Merge the call and the result
@@ -39,9 +39,10 @@ Put the result in the params file.
 ```{r}
 Full.Geom.01$Outcome <- map_chr(Geom01$params$iter, function(x) { unlist(Geom01Result$response$body$choices[[x]][[2]][2]) })
 table(Full.Geom.01$Outcome)
+Full.Geom.01.1211 <- Full.Geom.01
 ```
 
 ```{r}
-save(Full.Geom.01, file="Full.Geom.01.RData")
+save(Full.Geom.01.1211, file="Full.Geom.01.1211.RData")
 ```
 

@@ -1,0 +1,48 @@
+---
+title: "LogNormal-Results-Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rlnorm-0-1.RData")
+```
+
+2. The queries
+
+```{r}
+LNorm01Call <- stream_in(file("rlnorm-0-1-Call-Revised-1211.jsonl"))
+```
+
+3. The Results
+
+```{r}
+LNorm01Result <- stream_in(file("rlnorm-0-1-1211_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+LNormal.0.1.OpenAI <- left_join(LNorm01Call,LNorm01Result)
+Full.LNormal.0.1 <- left_join(LNormal01$params, LNormal.0.1.OpenAI)
+```
+
+The file is saved as `Full.LNormal.0.1.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.LNormal.0.1$Outcome <- map_chr(LNormal01$params$iter, function(x) { unlist(LNorm01Result$response$body$choices[[x]][[2]][2]) })
+table(Full.LNormal.0.1$Outcome)
+Full.LNormal.0.1.1211 <- Full.LNormal.0.1
+```
+
+```{r}
+save(Full.LNormal.0.1.1211, file="Full.LNormal.0.1.1211.RData")
+```
+
