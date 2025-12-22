@@ -1,0 +1,48 @@
+---
+title: "Geometric Results Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rgeom-0.3.RData")
+```
+
+2. The queries
+
+```{r}
+Geom03Call <- stream_in(file("rgeom-0.3-Call-Revised-1211.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Geom03Result <- stream_in(file("rgeom-0.3-1211_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Geom.03.OpenAI <- left_join(Geom03Call,Geom03Result)
+Full.Geom.03 <- left_join(Geom03$params, Geom.03.OpenAI)
+```
+
+The file is saved as `Full.Geom.03.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Geom.03$Outcome <- map_chr(Geom03$params$iter, function(x) { unlist(Geom03Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Geom.03$Outcome)
+Full.Geom.03.1211 <- Full.Geom.03
+```
+
+```{r}
+save(Full.Geom.03.1211, file="Full.Geom.03.1211.RData")
+```
+
