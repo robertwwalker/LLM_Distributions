@@ -1,0 +1,281 @@
+---
+title: "Grapher"
+bibliography: "bibliography.bib"
+nocite: |
+     @*
+format:
+    html:
+     theme: superhero
+     fig-format: retina
+     fig-dpi: 600
+     fig-height: 6
+     fig-width: 8
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.retina=3, fig.width = 9, fig.height=6, warning = FALSE, message = FALSE, dev.args = list(jpeg = list(type = "cairo")), type="cairo")
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(Cairo)
+library(svglite)
+```
+
+There is commented code for loading in each of the three data files.  I have combined them and mutated them because it is a long operation.
+
+```{r}
+library(patchwork)
+load("Complete.Data.All.0409.RData")
+load("Complete.Data.All.0613.RData")
+load("Complete.Data.All.0806.RData")
+load("Complete.Data.All.1211.RData")
+Complete.Data <- dplyr::bind_rows(Complete.Data.0409, Complete.Data.0613, Complete.Data.0806, Complete.Data.1211)
+```
+
+A few objectives.
+
+- It occurred to me that we do not really make use of the *discrete* tag.  I will in this document in a moment.  
+
+## Fresh.Outcome
+
+I have recreated the outcomes below in a variable called `Fresh.Outcome`.  We should be careful about how these are recoded to be both transparent about what it does and for our clarity in reporting.  Here is that table.
+
+```{r}
+Complete.Data$Fresh.Outcome <- c(1:196000) %>% map_chr(., function(x) {Complete.Data$response$body$choices[[x]]$message$content})
+Complete.Data$model <- Complete.Data$body$model
+Complete.Data |> group_by(Fresh.Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+I am going to recreate the variable as follows.
+
+```{r}
+Complete.Data <- Complete.Data |> 
+  mutate(Outcome = case_match(Fresh.Outcome, c("Lognormal","Log-Normal","Log-normal") ~ "Lognormal",
+                              c("NegativeBinomial","Negative Binomial") ~ "Negative Binomial",
+                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness")~ "Skewed", .default = Fresh.Outcome))
+Complete.Data |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+## The `discrete` tag
+
+```{r}
+Complete.Data <- Complete.Data |> mutate(Type = case_match(name, c("Binomial","Geometric","Poisson") ~ "Discrete", .default = "not Discrete"))
+Complete.Data <- Complete.Data |> mutate(Correct = as.character(name==Outcome)) |> mutate(Correct = case_match(Correct, "TRUE" ~ "Correct", .default = "Incorrect"))
+```
+
+## The Plot
+
+```{r DTAP1, fig.width=9, fig.height=6, dpi=300}
+Tab.All <- Complete.Data |> group_by(model, name, Outcome) |> summarise(Count = n()) |> ungroup() |> group_by(model,name) |> mutate(Total = sum(Count)) |> ungroup() |> mutate(PCP = round(Count / Total, digits=3)) |> ungroup()
+TAP1 <- Tab.All |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="True Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(legend.location = "plot", panel.spacing = unit(2, "lines"), plot.label= element_text(size=5), plot.title=element_text(size=10, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(size=8)) + 
+    theme(legend.position="bottom", legend.direction = "horizontal") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top", guide = guide_axis(n.dodge = 2)) +
+    theme(
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8),
+        legend.key.width = unit(0.15, "in"),
+        legend.position = c(0.15, 0.69)
+    )
+TAP1
+```
+
+
+```{r BL, fig.width=9, fig.height=6, dpi=300}
+TAP1BL <- Tab.All |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="True Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(legend.location = "plot", panel.spacing = unit(2, "lines"), plot.label= element_text(size=5), plot.title=element_text(size=10, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(size=8)) + 
+    theme(legend.position="bottom", legend.direction = "horizontal") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top", guide = guide_axis(n.dodge = 2)) +
+    theme(
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8),
+        legend.key.width = unit(0.15, "in"),
+        legend.position = c(0, -0.06)
+    )
+TAP1BL
+ggsave(filename = "Final-Table-BotLLeg.jpeg", TAP1BL)
+```
+
+
+
+```{r T1TR, fig.width=9, fig.height=6, dpi=300, dev='CairoJPEG'}
+TAP1TR <- Tab.All |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="True Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(legend.location = "plot", panel.spacing = unit(2, "lines"), plot.label= element_text(size=5), plot.title=element_text(size=10, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(size=8)) + 
+    theme(legend.position="bottom", legend.direction = "horizontal") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top", guide = guide_axis(n.dodge = 2)) +
+    theme(
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8),
+        legend.key.width = unit(0.15, "in"),
+        legend.position = c(0.9, 1.12)
+    )
+TAP1TR
+```
+
+
+
+```{r DTAP2, fig.width=9, fig.height=6, dpi=300, type='cairo'}
+TAP2 <- Tab.All |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="True Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(legend.location = "plot", panel.spacing = unit(2, "lines"), plot.label= element_text(size=5), plot.title=element_text(size=10, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(size=8)) + 
+    theme(legend.position="bottom") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top", guide = guide_axis(n.dodge = 2)) + 
+  theme(
+    legend.text = element_text(size = 6), 
+    legend.title = element_text(size = 8),
+    legend.key.width = unit(0.15, "in"),
+    legend.position = c(0.4, 0.8)
+    )
+TAP2
+```
+
+
+
+### A go at Discrete
+
+```{r DDT1, fig.width=8, fig.height=6, dpi=900}
+Data.Disc.Tab <- Complete.Data |> filter(Type=="Discrete") |> group_by(model, name, Outcome) |> summarise(Count = n()) |> ungroup() |> group_by(model,name) |> mutate(Total = sum(Count)) |> ungroup() |> mutate(PCP = round(Count / Total, digits=3)) |> ungroup()
+TableDisc <- Data.Disc.Tab |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="a", subtitle="Discrete Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(plot.label= element_text(size=5), plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(angle = 25)) + 
+    theme(legend.position="bottom") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top") + guides(fill=FALSE)
+TableDisc
+```
+
+```{r DHT1}
+TabPCPDisc <- Complete.Data |> filter(Type=="Discrete") |> ggplot() + aes(y=name, fill=as.character(Correct), facet=model) + geom_bar(position="fill", alpha=0.4) + 
+    scale_fill_viridis_d(option = "E", alpha=0.4, direction = 1) + 
+    labs(y="True Distribution", x="Model Outcome") + labs(title="b", subtitle="True Discrete Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot") + theme(legend.position="bottom") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + guides(fill=FALSE)
+TabPCPDisc
+```
+
+```{r Pat1}
+TableDisc + TabPCPDisc + plot_layout(widths=c(5,2))
+```
+
+## Not Discrete
+
+```{r, fig.width=8, fig.height=6, dpi=900}
+Complete.Data |> filter(Type=="not Discrete") |> group_by(model, name, Outcome) |> summarise(Count = n()) |> ungroup() |> group_by(model,name) |> mutate(Total = sum(Count)) |> ungroup() |> mutate(PCP = round(Count / Total, digits=3)) |> ungroup() -> TableDatanD
+TableNDisc <- TableDatanD |> ggplot() + aes(x=Outcome, y=fct_rev(name), fill=PCP, facet=model) +
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), size=3, color="black") + labs(caption="Values are row percents", title="c", subtitle="Continuous Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(plot.label= element_text(size=5), plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(angle = 25)) + 
+    theme(legend.position="bottom") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + scale_x_discrete(position="top") + guides(fill=FALSE)
+TableNDisc
+```
+
+```{r nDHT1}
+TabPCPnDisc <- Complete.Data |> filter(Type=="not Discrete") |> ggplot() + aes(y=name, fill=as.character(Correct), facet=model) + geom_bar(position="fill", alpha=0.4) + 
+    scale_fill_viridis_d(option = "E", alpha=0.4, direction = 1) + 
+    labs(y="True Distribution", x="Model Outcome") + labs(title="d", subtitle="Continuous Distributions and Model Responses", fill="Row. Pct.") + theme_minimal() + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot") + theme(legend.position="bottom") + facet_wrap(vars(model), nrow = 3, strip.position = "bottom") + guides(fill=FALSE)
+TabPCPnDisc
+```
+
+## A Combined Patchwork
+
+```{r, fig.width=8, fig.height=8, dpi=600}
+design <- c(area(1,1,4,5),area(1,6,4,8), area(5,1,8,5),area(5,6,8,8))
+My.Graph <- (TableDisc + TabPCPDisc) / (TableNDisc + TabPCPnDisc) + plot_layout(guides='collect', design=design, nrow = 2, ncol=2) + theme(legend.position = "bottom")
+My.Graph
+ggsave(filename = "CoolPlot.png", My.Graph, dpi=600, dev = png, type="cairo", width=9, height=6, units = "in")
+```
+
+
+# gpt4-0613
+
+```{r}
+Tab1.1 <- Complete.Data |> filter(model=="gpt-4-0613") %$% 
+  table(name, Outcome) %>% 
+  data.frame() %>% group_by(name) %>% 
+  mutate(Count = sum(Freq)) %>% ungroup() |> 
+  mutate(Percent = round(Freq / Count, digits=3)) |> 
+  ggplot() + aes(x=as.character(name), y=as.character(fct_rev(Outcome)), fill=Percent) + 
+  geom_tile(alpha=0.4) + 
+  scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+  labs(x="True Distribution", y="gpt-4-0613 Outcome") + geom_text(aes(label=Percent), color="black") + labs(caption="Values are column percents", title="True Distributions and Model Responses", fill="Col. Pct.") + theme_minimal() + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(angle = 45)) + 
+  theme(legend.position="bottom")
+
+Tab2.1 <- Complete.Data |> filter(model=="gpt-4-0613") |> group_by(name) |> mutate(Correct = (name==Outcome)) |> ggplot() + aes(x=name, fill=Correct) + geom_bar(position = "fill", alpha=0.4) + scale_fill_viridis_d(option="E", direction=-1) + theme_minimal() + labs(x="True Distribution", y="Percent Correct", title="b", subtitle="Correct Prediction: gpt-4-0613")+ theme(text = element_text(size = 10, family="helvetica"), plot.title = element_text(family="helvetica", face="bold"), plot.title.position = "plot", plot.subtitle = element_text(size=12, family="helvetica"))
+
+Tab3.1 <- Complete.Data |> filter(model=="gpt-4-0613") |> mutate(Correct = (name==Outcome)) |> ggplot() + aes(y=Outcome, fill=Correct) + geom_bar(alpha=0.4, show.legend = FALSE, position = "stack") + scale_fill_viridis_d(option="E", direction=-1) + theme_minimal() + labs(y="gpt-4-0613 Outcome", x="Frequency Chosen", title="c", subtitle="True and False Responses: gpt-4-0613") + theme(text = element_text(size = 10, family="helvetica"), plot.title=element_text(family="helvetica", size=12, face="bold"), plot.title.position = "plot") + theme(legend.position="bottom")
+```
+
+# A third patchwork
+
+```{r}
+design <- c(area(1,1,4,4),area(1,5,4,6), area(5,1,6,4),area(5,5,6,6))
+Tab1.1 + Tab3.1 + Tab2.1 + guide_area()+ plot_layout(design=design, guides = "collect") -> Plot3
+ggsave("Plot0613.jpeg", Plot3)
+```
+
+# Others
+
+```{r}
+Complete.Data |> ggplot() + aes(y=Outcome, fill=Correct, group=model) + geom_bar(position="fill") + facet_grid(rows=vars(name), cols=vars(model), scales = "free")  + theme_minimal() + scale_fill_viridis_d(option = "E") -> Simples
+ggsave("Simples.jpeg", Simples, dpi=600)
+```
+
+```{r}
+Complete.Data |> ggplot() + aes(y=name, fill=Correct) + geom_bar(position="fill", alpha=0.4) + facet_grid(cols=vars(model), scales = "free")  + theme_minimal() + scale_fill_viridis_d(option = "E") + labs(title="a", x="Percent", y="True Distribution", subtitle="Percent Correctly Predicted") + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", legend.position="bottom") -> Plot1A
+Plot1A
+```
+
+```{r}
+Complete.Data |> mutate(NormPoisU = as.character(Outcome %in% c("Uniform","Normal","Poisson"))) |> ggplot() + aes(y=Outcome, fill=Correct) + geom_bar(position="dodge", alpha=0.4) + facet_grid(cols=vars(model), rows=vars(NormPoisU), scales = "free")  + theme_minimal() + scale_fill_viridis_d(option = "E") + labs(title="b", x="Percent", y="Model Outcome", subtitle="Model Outcomes") + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", legend.position="bottom") -> Plot1B
+Plot1B
+```
+
+
+```{r}
+Complete.Data |> ggplot() + aes(y=Outcome, fill=Correct) + geom_bar(position="dodge", alpha=0.4) + facet_grid(cols=vars(model), scales = "free")  + theme_minimal() + scale_fill_viridis_d(option = "E") + labs(title="b", x="log_10", y="Model Outcome", subtitle="Model Outcomes") + theme(plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", legend.position="bottom") + scale_x_log10() -> Plot1B1
+Plot1B1
+```
+
+```{r}
+Complete.Data %$% table(model, name, Outcome, Correct) %>% data.frame() |> ggplot() + aes(y=Outcome, x=Freq, fill=Correct) + geom_col(position="fill") + facet_grid(cols=vars(model))
+```
+
+```{r}
+Complete.Data %$% table(model, name, Outcome, Correct) %>% data.frame() |> ggplot() + aes(y=Outcome, x=Freq, fill=Correct) + geom_col(position="dodge") + facet_grid(cols=vars(model)) + scale_x_sqrt() + scale_fill_viridis_d(option = "E") + theme_minimal()
+```
+
+```{r}
+library(janitor)
+DTab <- Complete.Data |> group_by(model, name, Outcome, Correct) |> summarise(Count = n()) |> ungroup() |> group_by(model, name) |> mutate(Total = sum(Count)) |> ungroup() |> mutate(PCP = Count / Total)
+```
+
+```{r, eval=FALSE}
+TableData |> ggplot() + aes(y=as.character(Outcome), x=as.character(fct_rev(name)), fill=PCP, facet=model) + 
+    geom_tile(alpha=0.4) + 
+    scale_fill_viridis_c(option = "E", alpha=0.4, direction = -1) + 
+    labs(y="True Distribution", x="Model Outcome") + geom_text(aes(label=round(PCP, digits=2)), color="black") + labs(caption="Values are column percents", title="a", subtitle="True Distributions and Model Responses", fill="Col. Pct.") + theme_minimal() + theme(plot.label= element_text(size=5), plot.title=element_text(size=12, face = "bold", hjust=0), plot.title.position = "plot", axis.text.x = element_text(angle = 45)) + 
+    theme(legend.position="bottom") + facet_wrap(vars(model), ncol = 3)
+```
+
+
+```{r, eval=FALSE}
+addSmallLegend <- function(myPlot, pointSize = 0.5, textSize = 3, spaceLegend = 0.1) {
+    myPlot +
+        guides(shape = guide_legend(override.aes = list(size = pointSize)),
+               color = guide_legend(override.aes = list(size = pointSize))) +
+        theme(legend.title = element_text(size = textSize), 
+              legend.text  = element_text(size = textSize),
+              legend.key.size = unit(spaceLegend, "lines"))
+}
+
+# Apply on original plot
+addSmallLegend(p)
+```
+
+
+
+# References
+
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
+```

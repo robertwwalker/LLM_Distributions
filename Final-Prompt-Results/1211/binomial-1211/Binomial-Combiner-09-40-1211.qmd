@@ -1,0 +1,48 @@
+---
+title: "Binomial 40 Results Processor"
+format: html
+---
+
+I will begin by loading three things.  
+
+1. the data that were stored from creating the batch file.
+
+```{r, message=FALSE, warning=FALSE}
+library(jsonlite)
+library(tidyverse)
+load("rbinom-0.9-40.RData")
+```
+
+2. The queries
+
+```{r}
+Binom0.9.40Call <- stream_in(file("rbinom-0.9-40-Call-Revised-1211.jsonl"))
+```
+
+3. The Results
+
+```{r}
+Binom0.9.40Result <- stream_in(file("rbinom-0.9-40-1211_output.jsonl"))
+```
+
+## Merge the call and the result
+
+```{r}
+Binom.09.40.OpenAI <- left_join(Binom0.9.40Call,Binom0.9.40Result)
+Full.Binom.09.40 <- left_join(Binom0.9.40$params, Binom.09.40.OpenAI)
+```
+
+The file is saved as `Full.Binom.09.40.RData`.
+
+Put the result in the params file.
+
+```{r}
+Full.Binom.09.40$Outcome <- map_chr(Binom0.9.40$params$iter, function(x) { unlist(Binom0.9.40Result$response$body$choices[[x]][[2]][2]) })
+table(Full.Binom.09.40$Outcome)
+Full.Binom.09.40.1211 <- Full.Binom.09.40
+```
+
+```{r}
+save(Full.Binom.09.40.1211, file="Full.Binom.09.40.1211.RData")
+```
+

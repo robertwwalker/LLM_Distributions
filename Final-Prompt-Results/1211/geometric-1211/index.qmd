@@ -1,0 +1,23 @@
+---
+title: "Geometric - 1211"
+format: html
+---
+
+# Geometric
+
+```{r}
+library(gt)
+load("Complete.Geometric.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Geometric.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Geometric.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

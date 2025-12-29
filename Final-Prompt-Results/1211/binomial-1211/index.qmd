@@ -1,0 +1,23 @@
+---
+title: "Binomial - 1211"
+format: html
+---
+
+# Binomial
+
+```{r}
+library(gt)
+load("Complete.Binomial.1211.RData")
+```
+
+## By Sample Size
+
+```{r}
+Complete.Binomial.1211 |> janitor::tabyl(n, Outcome) |> gt()
+```
+
+## By Base Distribution
+
+```{r}
+Complete.Binomial.1211 |> janitor::tabyl(key, Outcome) |> gt()
+```

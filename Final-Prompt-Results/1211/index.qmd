@@ -1,0 +1,82 @@
+---
+title: "Model: 1211"
+format: html
+---
+
+The following results repeat the experiment with `gpt-5.2-2025-12-11`.
+
+The individual results can be found in the separate directories.
+
++ [Beta](./beta-1211/)
++ [Binomial](./binomial-1211/)
++ [Chi-squared](./chisquare-1211/)
++ [Gamma](./gamma-1211/)
++ [Geometric](./geometric-1211/)
++ [Lognormal](./lognormal-1211/)
++ [Normal](./normal-1211/)
++ [Poisson](./poisson-1211/)
++ [Uniform](./uniform-1211/)
+
+# Aggregate Results
+
+```{r}
+# Beta
+load("./beta-1211/CompleteBeta.1211.RData")
+Complete.Beta.1211$name <- "Beta"
+Complete.Beta.1211 <- Complete.Beta.1211 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rbeta-"),"-",","),")",sep=""))
+
+# Binomial
+load("./binomial-1211/Complete.Binomial.1211.RData")
+Complete.Binomial.1211$name <- "Binomial"
+Complete.Binomial.1211 <- Complete.Binomial.1211 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rbinom-"),"-",","),")",sep=""))
+
+# Chi-square
+load("./chisquare-1211/CompleteChisq.1211.RData")
+Complete.Chisq.1211$name <- "Chi-square"
+Complete.Chisq.1211 <- Complete.Chisq.1211 |> mutate(Dist = paste0(name,"(",str_remove(key, "rchisq-"),")",sep=""))
+
+
+# Gamma
+load("./gamma-1211/CompleteGamma.1211.RData")
+Complete.Gamma.1211$name <- "Gamma"
+Complete.Gamma.1211 <- Complete.Gamma.1211 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rgamma-"),"-",","),")",sep=""))
+
+# Geometric
+load("./geometric-1211/Complete.Geometric.1211.RData")
+Complete.Geometric.1211$name <- "Geometric"
+Complete.Geometric.1211 <- Complete.Geometric.1211 |> mutate(Dist = paste0(name,"(",str_remove(key, "rgeom-"),")",sep=""))
+
+# Lognormal
+load("./lognormal-1211/CompleteLognormal.1211.RData")
+Complete.Lognormal.1211$name <- "Lognormal"
+Complete.Lognormal.1211 <- Complete.Lognormal.1211 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rlnorm-"),"-",","),")",sep=""))
+
+# Normal
+load("./normal-1211/CompleteNormal.1211.RData")
+Complete.Normal.1211$name <- "Normal"
+Complete.Normal.1211 <- Complete.Normal.1211 |> mutate(Dist = paste0(name,"(",str_replace(str_remove(key, "rnorm-"),"-",","),")",sep=""))
+
+# Poisson
+load("./poisson-1211/CompletePoisson.1211.RData")
+Complete.Poisson.1211$name <- "Poisson"
+Complete.Poisson.1211 <- Complete.Poisson.1211 |> mutate(Dist = paste0(name,"(",str_remove(key, "rpois-"),")",sep=""))
+
+# Uniform
+load("./uniform-1211/Complete.Uniform.1211.RData")
+Complete.Uniform.1211$name <- "Uniform"
+Complete.Uniform.1211 <- Complete.Uniform.1211 |> mutate(Dist = paste0(name,"[",str_replace(str_remove(key, "runif-"),"-",","),"]",sep=""))
+
+# Bind Together
+Complete.Data.1211 <- dplyr::bind_rows(Complete.Beta.1211, Complete.Binomial.1211, Complete.Chisq.1211, Complete.Gamma.1211, Complete.Geometric.1211, Complete.Lognormal.1211, Complete.Normal.1211, Complete.Poisson.1211, Complete.Uniform.1211)
+
+# Create size and Full Distribution
+Complete.Data.1211 <- Complete.Data.1211 |> rowwise() |> mutate(Size = length(data))
+Complete.Data.1211 <- Complete.Data.1211 |> mutate(Full.Dist = paste0(Dist,"-",Size),sep="")
+```
+
+## Results
+
+```{r}
+
+```
+

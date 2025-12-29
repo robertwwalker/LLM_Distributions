@@ -1,0 +1,6 @@
+load("Full.Binom.02.40.1211.RData")
+load("Full.Binom.02.20.1211.RData")
+load("Full.Binom.02.10.1211.RData")
+load("Full.Binom.02.5.1211.RData")
+Complete.Binom.02.1211 <- bind_rows(Full.Binom.02.40.1211, Full.Binom.02.20.1211, Full.Binom.02.10.1211, Full.Binom.02.5.1211)
+save(Complete.Binom.02.1211, file="CompleteBinom.02.1211.RData")
