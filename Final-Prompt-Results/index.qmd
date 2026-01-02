@@ -1,0 +1,53 @@
+---
+title: "Complete Data Summary"
+format: html
+---
+
+## Collate Complete Files
+
+This section collects the four distinct results sets and binds them together.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(gtExtras)
+load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.0409.RData")
+load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.0613.RData")
+load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.0806.RData")
+load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.1211.RData")
+Complete.Data.01.2026 <- bind_rows(Complete.Data.0409, Complete.Data.0613, Complete.Data.0806, Complete.Data.1211)
+```
+
+
+## Results
+
+A first table of pure raw responses comes next.  This provides the foundation for cleaning up similar labels with variation in spelling and capitalization.
+
+```{r FirstTab}
+Complete.Data.01.2026$Fresh.Outcome <- c(1:196000) %>% map_chr(., function(x) {Complete.Data.01.2026$response$body$choices[[x]]$message$content})
+Complete.Data.01.2026$model <- Complete.Data.01.2026$body$model
+Complete.Data.01.2026 |> group_by(Fresh.Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+## Cleaned a bit
+
+This is the minimal table with cleaned responses.  It is still far too large for usefulness.
+
+```{r CleanTab, message=FALSE, warning=FALSE}
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> 
+  mutate(Outcome = case_match(Fresh.Outcome, 
+                              c("arcsine","Arcsine") ~ "Arcsine",
+                              c("categorical","Categorical") ~ "Categorical",
+                              c("exponential","Exponential") ~ "Exponential",
+                              c("beta","Beta") ~ "Beta",
+                              c("exgaussian","ExGaussian") ~ "ExGaussian",
+                              c("Normal","normal") ~ "Normal",
+                              c("binomial","Binomial") ~ "Binomial",
+                              c("geometric","Geometric") ~ "Geometric",
+                              c("gamma","Gamma") ~ "Gamma",                              c("Lognormal","lognormal","Log-Normal","Log-normal") ~ "Lognormal",
+                              c("NegativeBinomial","Negative Binomial","NegBinomial","Negbinomial","negativebinomial","Negativebinomial") ~ "Negative Binomial",
+                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness","skewnormal")~ "Skewed",
+                              c("Student","Studentt","Studentt","t")~ "Student's t", c("Uniform","uniform")~ "Uniform",
+                              c("ZeroInflatedPoisson","ZeroinflatedPoisson","Zero-inflated","ZIP")~ "ZIP",
+                              .default = Fresh.Outcome))
+Complete.Data.01.2026 |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
