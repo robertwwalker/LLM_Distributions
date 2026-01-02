@@ -23,14 +23,20 @@ library(svglite)
 
 There is commented code for loading in each of the three data files.  I have combined them and mutated them because it is a long operation.
 
-```{r}
+```{r, eval=FALSE}
 library(patchwork)
 load("Complete.Data.All.0409.RData")
 load("Complete.Data.All.0613.RData")
 load("Complete.Data.All.0806.RData")
 load("Complete.Data.All.1211.RData")
 Complete.Data <- dplyr::bind_rows(Complete.Data.0409, Complete.Data.0613, Complete.Data.0806, Complete.Data.1211)
+save(Complete.Data, file="Final.Data.Merged.RData")
 ```
+
+```{r}
+load("Final.Data.Merged.RData")
+```
+
 
 A few objectives.
 
@@ -46,14 +52,26 @@ Complete.Data$model <- Complete.Data$body$model
 Complete.Data |> group_by(Fresh.Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
 ```
 
-I am going to recreate the variable as follows.
+I am going to recreate the `Outcome` variable as follows.
 
 ```{r}
 Complete.Data <- Complete.Data |> 
-  mutate(Outcome = case_match(Fresh.Outcome, c("Lognormal","Log-Normal","Log-normal") ~ "Lognormal",
-                              c("NegativeBinomial","Negative Binomial") ~ "Negative Binomial",
-                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness")~ "Skewed", .default = Fresh.Outcome))
-Complete.Data |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+  mutate(Outcome = case_match(Fresh.Outcome, 
+                              c("arcsine","Arcsine") ~ "Arcsine",
+                              c("categorical","Categorical") ~ "Categorical",
+                              c("exponential","Exponential") ~ "Exponential",
+                              c("beta","Beta") ~ "Beta",
+                              c("exgaussian","ExGaussian") ~ "ExGaussian",
+                              c("Normal","normal") ~ "Normal",
+                              c("binomial","Binomial") ~ "Binomial",
+                              c("geometric","Geometric") ~ "Geometric",
+                              c("gamma","Gamma") ~ "Gamma",                              c("Lognormal","lognormal","Log-Normal","Log-normal") ~ "Lognormal",
+                              c("NegativeBinomial","Negative Binomial","NegBinomial","Negbinomial","negativebinomial","Negativebinomial") ~ "Negative Binomial",
+                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness","skewnormal")~ "Skewed",
+                              c("Student","Studentt","Studentt","t")~ "Student's t", c("Uniform","uniform")~ "Uniform",
+                              c("ZeroInflatedPoisson","ZeroinflatedPoisson","Zero-inflated","ZIP")~ "ZIP",
+                              .default = Fresh.Outcome))
+# Complete.Data |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
 ```
 
 ## The `discrete` tag
