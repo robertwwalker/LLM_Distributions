@@ -19,7 +19,9 @@ The individual results can be found in the separate directories.
 
 # Aggregate Results
 
-```{r}
+The first section compiles the individual results from different `ground truth` distributions into a single file for the results processed by this model -- `gpt-5.2-2025-12-11`.
+
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(gtExtras)
 # Beta
@@ -80,6 +82,8 @@ save(Complete.Data.1211, file="Complete.Data.All.1211.RData")
 
 ## Collate Complete Files
 
+This section collects the four distinct results sets and binds them together.
+
 ```{r}
 load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.0409.RData")
 load("~/Nextcloud/LLM_Distributions/Final-Prompt-Results/Complete.Data.All.0613.RData")
@@ -91,6 +95,8 @@ Complete.Data.01.2026 <- bind_rows(Complete.Data.0409, Complete.Data.0613, Compl
 
 ## Results
 
+A first table of pure raw responses comes next.  This provides the foundation for cleaning up similar labels with variation in spelling and capitalization.
+
 ```{r FirstTab}
 Complete.Data.01.2026$Fresh.Outcome <- c(1:196000) %>% map_chr(., function(x) {Complete.Data.01.2026$response$body$choices[[x]]$message$content})
 Complete.Data.01.2026$model <- Complete.Data.01.2026$body$model
@@ -98,6 +104,8 @@ Complete.Data.01.2026 |> group_by(Fresh.Outcome, model) |> summarise(Count = n()
 ```
 
 ## Cleaned a bit
+
+This is the minimal table with cleaned responses.  It is still far too large for usefulness.
 
 ```{r CleanTab}
 Complete.Data.01.2026 <- Complete.Data.01.2026 |> 
