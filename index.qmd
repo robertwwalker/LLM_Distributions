@@ -18,6 +18,8 @@ format:
 
 Eaglesmith, Justus, Tim Johnson, and Robert W. Walker.  2025.  *The performance of widely used language models tasked with identifying the distribution responsible for generating simulated data.*
 
+[TLDR;](./Final-Prompt-Results/Basic-Analysis.html)
+
 The directory `Final-Prompt-Results` contains [all the results](https://github.com/robertwwalker/LLM_Distributions/tree/main/Final-Prompt-Results).  They are organized hierarchically by model [0409-turbo, 0806, 0613, 1211] and then by distribution.
 
 - The [0409-turbo page](./Final-Prompt-Results/0409-turbo/Complete.Analysis-0409.html)
@@ -73,6 +75,10 @@ The results are combined in:
 Other results follow an identical pattern substituting the names of the distributions and parameters relevant in the given case, e.g. `Final-Prompt-Results/0409-turbo/beta-turbo/Beta-Combiner52-0409.html` becomes `Final-Prompt-Results/0409-turbo/poisson-turbo/Poisson-Combined-5-0409.html`
 
 As the files make clear, the keys for merging the batch results and the batch queries are the unique-id's that we assign for each distribution/parameter/iteration.
+
+# The Software Bibliography
+
+{{< pdf softbib.pdf width=100% height=600 >}}
 
 # References
 

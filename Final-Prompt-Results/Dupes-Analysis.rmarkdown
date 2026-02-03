@@ -1,0 +1,94 @@
+---
+title: "Grapher"
+bibliography: "bibliography.bib"
+nocite: |
+     @*
+format:
+    html:
+     theme: superhero
+     fig-format: retina
+     fig-dpi: 600
+     fig-height: 6
+     fig-width: 8
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.retina=3, fig.width = 9, fig.height=6, warning = FALSE, message = FALSE, dev.args = list(jpeg = list(type = "cairo")), type="cairo")
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(Cairo)
+library(svglite)
+```
+
+There is commented code for loading in each of the three data files.  I have combined them and mutated them because it is a long operation.
+
+```{r}
+library(magrittr)
+load("Complete.Data.01.2026.RData")
+```
+
+## Fresh.Outcome
+
+I have recreated the outcomes below in a variable called `Fresh.Outcome`.  We should be careful about how these are recoded to be both transparent about what it does and for our clarity in reporting.  Here is that table.
+
+```{r}
+Complete.Data.01.2026$Fresh.Outcome <- c(1:196000) %>% map_chr(., function(x) {Complete.Data.01.2026$response$body$choices[[x]]$message$content})
+Complete.Data.01.2026$model <- Complete.Data.01.2026$body$model
+Complete.Data.01.2026 |> group_by(Fresh.Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+I am going to recreate the `Outcome` variable as follows.
+
+```{r}
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> 
+  mutate(Outcome = case_match(Fresh.Outcome, 
+                              c("arcsine","Arcsine") ~ "Arcsine",
+                              c("categorical","Categorical") ~ "Categorical",
+                              c("exponential","Exponential") ~ "Exponential",
+                              c("beta","Beta") ~ "Beta",
+                              c("exgaussian","ExGaussian") ~ "ExGaussian",
+                              c("Normal","normal") ~ "Normal",
+                              c("binomial","Binomial") ~ "Binomial",
+                              c("Chisquare","Chi-square") ~ "Chi-square",
+                              c("geometric","Geometric") ~ "Geometric",
+                              c("gamma","Gamma") ~ "Gamma",                              c("Lognormal","lognormal","Log-Normal","Log-normal") ~ "Lognormal",
+                              c("NegativeBinomial","Negative Binomial","NegBinomial","Negbinomial","negativebinomial","Negativebinomial") ~ "Negative Binomial",
+                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness","skewnormal")~ "Skewed",
+                              c("Student","Studentt","Studentt","t")~ "Student's t", c("Uniform","uniform")~ "Uniform",
+                              c("ZeroInflatedPoisson","ZeroinflatedPoisson","Zero-inflated","ZIP")~ "ZIP",
+                              .default = Fresh.Outcome))
+Complete.Data.01.2026 |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+## Sorting the data to find duplicates
+
+```{r}
+Complete.Data.01.2026$data <- lapply(Complete.Data.01.2026$data, sort)
+Complete.Data.01.2026 |> group_by(data) |> mutate(Count = n()) 
+```
+
+The expected number is 4.  Anything greater than 4 is duplicated and the number of duplicates is the number divided by 4.  What distributions?  Shown divided by four, this obscures what is duplicated by what.
+
+```{r}
+Complete.Data.01.2026 |> group_by(data) |> mutate(Count = n()) |> filter(Count > 4) %$% table(Dist) |> data.frame() |> mutate(Freq = Freq / 4)
+```
+
+### What distributions generate duplicates?
+
+```{r}
+Complete.Data.01.2026 |> group_by(data) |> mutate(Count = n()) |> filter(Count > 4) %$% table(name) |> data.frame() |> mutate(Freq = Freq / 4) |> ggplot() + aes(x=name, y=Freq) + geom_col() + theme_minimal() + coord_flip()
+```
+### How many responses per dataset and model?
+
+```{r}
+Complete.Data.01.2026 |> group_by(data) |> mutate(Count = n()) |> filter(Count > 4) |> ungroup() |> group_by(data, model) |> summarise(Response.Atoms = as.factor(length(table(Outcome)))) |> ggplot() + aes(x=Response.Atoms) + geom_bar() + facet_wrap(vars(model))
+```
+
+
+# References
+
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
+```
+

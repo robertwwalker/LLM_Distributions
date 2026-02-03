@@ -1,0 +1,8 @@
+---
+bibliography: softbib.bib
+nocite: |
+  @base, @Cairo, @dplyr, @gt, @gtExtras, @janitor, @jsonlite, @knitr1, @knitr2, @knitr3, @magrittr, @patchwork, @purrr, @quarto, @rasterpdf, @reticulate, @rmarkdown1, @rmarkdown2, @rmarkdown3, @svglite, @tidyverse
+---
+
+# Software Bibliography
+
