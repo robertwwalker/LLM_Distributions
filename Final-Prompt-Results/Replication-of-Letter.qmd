@@ -1,0 +1,140 @@
+---
+title: "LLM Distributions Letter: Results"
+bibliography: "bibliography.bib"
+nocite: |
+     @*
+format:
+    html:
+     theme: superhero
+     fig-format: retina
+     fig-dpi: 600
+     fig-height: 6
+     fig-width: 8
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.retina=3, fig.width = 9, fig.height=6, warning = FALSE, message = FALSE, dev.args = list(jpeg = list(type = "cairo")), type="cairo")
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(Cairo)
+library(svglite)
+```
+
+There is commented code for loading in each of the four data files.  I have combined them and mutated them because it is a long operation.
+
+```{r}
+library(magrittr)
+load("Complete.Data.01.2026.RData")
+```
+
+
+## Fresh.Outcome
+
+I have recreated the outcomes below in a variable called `Fresh.Outcome`.  We should be careful about how these are recoded to be both transparent about what it does and for our clarity in reporting.  Here is that table.
+
+```{r}
+Complete.Data.01.2026$Fresh.Outcome <- c(1:196000) %>% map_chr(., function(x) {Complete.Data.01.2026$response$body$choices[[x]]$message$content})
+Complete.Data.01.2026$model <- Complete.Data.01.2026$body$model
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> mutate(modelF = factor(model, levels = c('gpt-4-turbo-2024-04-09', 'gpt-4-0613', 'gpt-4o-2024-08-06', 'gpt-5.2-2025-12-11')))
+Complete.Data.01.2026 |> group_by(Fresh.Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+I am going to recreate the `Outcome` variable as follows.
+
+```{r}
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> 
+  mutate(Outcome = case_match(Fresh.Outcome, 
+                              c("arcsine","Arcsine") ~ "Arcsine",
+                              c("categorical","Categorical") ~ "Categorical",
+                              c("exponential","Exponential") ~ "Exponential",
+                              c("beta","Beta") ~ "Beta",
+                              c("Chisquare","Chi-Square") ~ "Chi-square",
+                              c("exgaussian","ExGaussian") ~ "ExGaussian",
+                              c("Normal","normal") ~ "Normal",
+                              c("binomial","Binomial") ~ "Binomial",
+                              c("geometric","Geometric") ~ "Geometric",
+                              c("gamma","Gamma") ~ "Gamma",                              c("Lognormal","lognormal","Log-Normal","Log-normal") ~ "Lognormal",
+                              c("NegativeBinomial","Negative Binomial","NegBinomial","Negbinomial","negativebinomial","Negativebinomial") ~ "Negative Binomial",
+                              c("Skewed","Skewnormal","SkewNormal","Skew-normal","Skew-right","Skewness","skewnormal")~ "Skewed",
+                              c("Student","Studentt","Studentt","t")~ "Student's t", c("Uniform","uniform")~ "Uniform",
+                              c("ZeroInflatedPoisson","ZeroinflatedPoisson","Zero-inflated","ZIP")~ "ZIP",
+                              .default = Fresh.Outcome))
+Complete.Data.01.2026 |> group_by(Outcome, model) |> summarise(Count = n()) |>  ungroup() |> pivot_wider(names_from = model, values_from = Count) |> gt()
+```
+
+## The `discrete` tag
+
+```{r}
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> mutate(Type = case_match(name, c("Binomial","Geometric","Poisson") ~ "Discrete", .default = "not Discrete"))
+Complete.Data.01.2026 <- Complete.Data.01.2026 |> mutate(Correct = as.character(name==Outcome)) |> mutate(Correct = case_match(Correct, "TRUE" ~ "Correct", .default = "Incorrect"))
+```
+
+## Basic Percent Correctly Predicted
+
+```{r}
+MNTotals <- Complete.Data.01.2026 |> group_by(model, name) |> summarise(Total = n()) |> ungroup()
+PCP <- Complete.Data.01.2026 |> group_by(model, name, Correct) |> summarise(count = n()) |> ungroup()
+PCPTab <- left_join(PCP, MNTotals) |> filter(Correct=="Correct") |> mutate(PCP = count / Total) |> select(model, name, PCP)
+PCPTab
+```
+
+
+
+
+## The Plot
+
+```{r DTAP1, fig.width=9, fig.height=6, dpi=300}
+Tab.All <- Complete.Data.01.2026 |> group_by(model, name, Outcome) |> summarise(Count = n()) |> ungroup() |> group_by(model,name) |> mutate(Total = sum(Count)) |> ungroup() |> mutate(PCP = round(Count / Total, digits=3)) |> ungroup()
+```
+
+
+
+```{r}
+#| echo: false
+#| message: false
+
+my_greys <- colorRampPalette(c("grey100", "grey60"))(40)
+library(rasterpdf)
+Tab.All <- Tab.All |> mutate(modelF = factor(model, levels = c('gpt-4-turbo-2024-04-09', 'gpt-4-0613', 'gpt-4o-2024-08-06', 'gpt-5.2-2025-12-11'))) |> mutate(Dist.Match = (name==Outcome))
+```
+
+
+```{r}
+Tab.All <- Tab.All |> mutate(PCPa = round(PCP, digits=2))
+Tab.All$PCPa1 <- as.character(Tab.All$PCPa)
+Tab.All <- Tab.All |> mutate(PCPa1 = case_when(PCPa1 == "0" ~ "<0.01", .default = PCPa1))
+FF3 <- ggplot(Tab.All) + 
+  aes(y=fct_rev(Outcome), x=name, fill=PCP, facet=modelF) + 
+  geom_tile(aes(color=Dist.Match), lwd=0.2, width=0.95, height=0.95) + 
+  scale_color_manual(values = c("white","black")) + 
+  guides(color="none") +
+  scale_fill_gradientn(colors = my_greys) + 
+  labs(x="Known Distribution", y="Model Outcome") +
+  geom_text(aes(label=PCPa1), size=2, color="black") +
+  labs(caption="Values are row proportions \n Outlined cells isolate row/column matches", title="Known Distributions and Model Responses", fill="Row. Pct.") + 
+  theme_minimal() + 
+  theme(legend.location = "plot", 
+        panel.spacing = unit(0.5, "lines"), 
+        plot.label= element_text(size=5), 
+        plot.title=element_text(size=10, face = "bold", hjust=0),
+        plot.title.position = "plot", 
+        axis.text.x = element_text(size=8, angle=30), 
+        axis.text.y = element_text(size=5), 
+        legend.direction = "horizontal",
+        legend.text = element_text(size = 4), 
+        legend.title = element_text(size = 6),
+        legend.key.width = unit(0.1, "in"),
+        legend.position = c(0.0, -0.1)
+) +
+    facet_wrap(vars(modelF), scales="free_y")
+ggsave(FF3, filename="FinalFigureFreeY-v2.jpeg", width=6.5, height=6.5, dpi=900, units="in")
+```
+
+![Free Y](./FinalFigureFreeY-v2.jpeg)
+
+# References
+
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
+```
