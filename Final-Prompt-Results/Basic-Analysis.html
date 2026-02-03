@@ -137,23 +137,23 @@ div.csl-indent {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span> <span class="ot">&lt;-</span> Complete.Data.<span class="fl">01.2026</span> <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">modelF =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'gpt-4-turbo-2024-04-09'</span>, <span class="st">'gpt-4-0613'</span>, <span class="st">'gpt-4o-2024-08-06'</span>, <span class="st">'gpt-5.2-2025-12-11'</span>)))</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span> <span class="sc">|&gt;</span> <span class="fu">group_by</span>(Fresh.Outcome, model) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> model, <span class="at">values_from =</span> Count) <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="czjhklhkni" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#czjhklhkni table {
+<div id="hspthoqsro" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hspthoqsro table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#czjhklhkni thead, #czjhklhkni tbody, #czjhklhkni tfoot, #czjhklhkni tr, #czjhklhkni td, #czjhklhkni th {
+#hspthoqsro thead, #hspthoqsro tbody, #hspthoqsro tfoot, #hspthoqsro tr, #hspthoqsro td, #hspthoqsro th {
   border-style: none;
 }
 
-#czjhklhkni p {
+#hspthoqsro p {
   margin: 0;
   padding: 0;
 }
 
-#czjhklhkni .gt_table {
+#hspthoqsro .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -179,12 +179,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_caption {
+#hspthoqsro .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#czjhklhkni .gt_title {
+#hspthoqsro .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -196,7 +196,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#czjhklhkni .gt_subtitle {
+#hspthoqsro .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -208,7 +208,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#czjhklhkni .gt_heading {
+#hspthoqsro .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -220,13 +220,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_bottom_border {
+#hspthoqsro .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_col_headings {
+#hspthoqsro .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -241,7 +241,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_col_heading {
+#hspthoqsro .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -261,7 +261,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#czjhklhkni .gt_column_spanner_outer {
+#hspthoqsro .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -273,15 +273,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#czjhklhkni .gt_column_spanner_outer:first-child {
+#hspthoqsro .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#czjhklhkni .gt_column_spanner_outer:last-child {
+#hspthoqsro .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#czjhklhkni .gt_column_spanner {
+#hspthoqsro .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -293,11 +293,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#czjhklhkni .gt_spanner_row {
+#hspthoqsro .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#czjhklhkni .gt_group_heading {
+#hspthoqsro .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -323,7 +323,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#czjhklhkni .gt_empty_group_heading {
+#hspthoqsro .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -338,15 +338,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#czjhklhkni .gt_from_md > :first-child {
+#hspthoqsro .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#czjhklhkni .gt_from_md > :last-child {
+#hspthoqsro .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#czjhklhkni .gt_row {
+#hspthoqsro .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -365,7 +365,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#czjhklhkni .gt_stub {
+#hspthoqsro .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -378,7 +378,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#czjhklhkni .gt_stub_row_group {
+#hspthoqsro .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -392,15 +392,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#czjhklhkni .gt_row_group_first td {
+#hspthoqsro .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#czjhklhkni .gt_row_group_first th {
+#hspthoqsro .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#czjhklhkni .gt_summary_row {
+#hspthoqsro .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -410,16 +410,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#czjhklhkni .gt_first_summary_row {
+#hspthoqsro .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_first_summary_row.thick {
+#hspthoqsro .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#czjhklhkni .gt_last_summary_row {
+#hspthoqsro .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -429,7 +429,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_grand_summary_row {
+#hspthoqsro .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -439,7 +439,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#czjhklhkni .gt_first_grand_summary_row {
+#hspthoqsro .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -449,7 +449,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_last_grand_summary_row_top {
+#hspthoqsro .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -459,11 +459,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_striped {
+#hspthoqsro .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#czjhklhkni .gt_table_body {
+#hspthoqsro .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -472,7 +472,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_footnotes {
+#hspthoqsro .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -486,7 +486,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_footnote {
+#hspthoqsro .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -495,7 +495,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#czjhklhkni .gt_sourcenotes {
+#hspthoqsro .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -509,7 +509,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#czjhklhkni .gt_sourcenote {
+#hspthoqsro .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -517,72 +517,72 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#czjhklhkni .gt_left {
+#hspthoqsro .gt_left {
   text-align: left;
 }
 
-#czjhklhkni .gt_center {
+#hspthoqsro .gt_center {
   text-align: center;
 }
 
-#czjhklhkni .gt_right {
+#hspthoqsro .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#czjhklhkni .gt_font_normal {
+#hspthoqsro .gt_font_normal {
   font-weight: normal;
 }
 
-#czjhklhkni .gt_font_bold {
+#hspthoqsro .gt_font_bold {
   font-weight: bold;
 }
 
-#czjhklhkni .gt_font_italic {
+#hspthoqsro .gt_font_italic {
   font-style: italic;
 }
 
-#czjhklhkni .gt_super {
+#hspthoqsro .gt_super {
   font-size: 65%;
 }
 
-#czjhklhkni .gt_footnote_marks {
+#hspthoqsro .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#czjhklhkni .gt_asterisk {
+#hspthoqsro .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#czjhklhkni .gt_indent_1 {
+#hspthoqsro .gt_indent_1 {
   text-indent: 5px;
 }
 
-#czjhklhkni .gt_indent_2 {
+#hspthoqsro .gt_indent_2 {
   text-indent: 10px;
 }
 
-#czjhklhkni .gt_indent_3 {
+#hspthoqsro .gt_indent_3 {
   text-indent: 15px;
 }
 
-#czjhklhkni .gt_indent_4 {
+#hspthoqsro .gt_indent_4 {
   text-indent: 20px;
 }
 
-#czjhklhkni .gt_indent_5 {
+#hspthoqsro .gt_indent_5 {
   text-indent: 25px;
 }
 
-#czjhklhkni .katex-display {
+#hspthoqsro .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#czjhklhkni div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#hspthoqsro div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1424,7 +1424,7 @@ div.csl-indent {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Basic-Analysis_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="3900"></p>
+<p><img src="Basic-Analysis_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1950"></p>
 </figure>
 </div>
 </div>
@@ -1435,11 +1435,77 @@ div.csl-indent {
 <figcaption>FinalFig</figcaption>
 </figure>
 </div>
+<section id="round-to-3" class="level2">
+<h2 class="anchored" data-anchor-id="round-to-3">Round to 3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Tab.All) <span class="sc">+</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>modelF) <span class="sc">+</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">color=</span>Dist.Match), <span class="at">lwd=</span><span class="fl">0.2</span>, <span class="at">width=</span><span class="fl">0.95</span>, <span class="at">height=</span><span class="fl">0.95</span>) <span class="sc">+</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>)) <span class="sc">+</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> my_greys) <span class="sc">+</span> </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Distribution"</span>, <span class="at">y=</span><span class="st">"Model Outcome"</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">4</span>)), <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption=</span><span class="st">"Values are row proportions </span><span class="sc">\n</span><span class="st"> Outlined cells isolate row/column matches"</span>, <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span> </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, </span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>),</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>), </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(modelF), <span class="at">scales=</span><span class="st">"free_y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Basic-Analysis_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="5400"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Tab.All <span class="ot">&lt;-</span> Tab.All <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">PCPa =</span> <span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">2</span>))</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>Tab.All<span class="sc">$</span>PCPa1 <span class="ot">&lt;-</span> <span class="fu">as.character</span>(Tab.All<span class="sc">$</span>PCPa)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>Tab.All <span class="ot">&lt;-</span> Tab.All <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">PCPa1 =</span> <span class="fu">case_when</span>(PCPa1 <span class="sc">==</span> <span class="st">"0"</span> <span class="sc">~</span> <span class="st">"&lt;0.01"</span>, <span class="at">.default =</span> PCPa1))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>FF3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(Tab.All) <span class="sc">+</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>modelF) <span class="sc">+</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">color=</span>Dist.Match), <span class="at">lwd=</span><span class="fl">0.2</span>, <span class="at">width=</span><span class="fl">0.95</span>, <span class="at">height=</span><span class="fl">0.95</span>) <span class="sc">+</span> </span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>)) <span class="sc">+</span> </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> my_greys) <span class="sc">+</span> </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Distribution"</span>, <span class="at">y=</span><span class="st">"Model Outcome"</span>) <span class="sc">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>PCPa1), <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption=</span><span class="st">"Values are row proportions </span><span class="sc">\n</span><span class="st"> Outlined cells isolate row/column matches"</span>, <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span> </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, </span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>),</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), </span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>), </span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(modelF), <span class="at">scales=</span><span class="st">"free_y"</span>)</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(FF3, <span class="at">filename=</span><span class="st">"FinalFigureFreeY-v2.jpeg"</span>, <span class="at">width=</span><span class="fl">6.5</span>, <span class="at">height=</span><span class="fl">6.5</span>, <span class="at">dpi=</span><span class="dv">900</span>, <span class="at">units=</span><span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>

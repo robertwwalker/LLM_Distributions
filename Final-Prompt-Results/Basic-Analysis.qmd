@@ -437,6 +437,67 @@ ggsave("FinalFigureFreeY.jpeg", FF2, width=6.5, height=6.5, dpi=900, units="in")
 
 ![FinalFig](./FinalFigureFreeY.jpeg)
 
+## Round to 3
+
+```{r}
+ggplot(Tab.All) + 
+  aes(y=fct_rev(Outcome), x=name, fill=PCP, facet=modelF) + 
+  geom_tile(aes(color=Dist.Match), lwd=0.2, width=0.95, height=0.95) + 
+  scale_color_manual(values = c("white","black")) + 
+  guides(color="none") +
+  scale_fill_gradientn(colors = my_greys) + 
+  labs(x="Known Distribution", y="Model Outcome") +
+  geom_text(aes(label=round(PCP, digits=4)), size=2, color="black") +
+  labs(caption="Values are row proportions \n Outlined cells isolate row/column matches", title="Known Distributions and Model Responses", fill="Row. Pct.") + 
+  theme_minimal() + 
+  theme(legend.location = "plot", 
+        panel.spacing = unit(0.5, "lines"), 
+        plot.label= element_text(size=5), 
+        plot.title=element_text(size=10, face = "bold", hjust=0),
+        plot.title.position = "plot", 
+        axis.text.x = element_text(size=8, angle=30), 
+        axis.text.y = element_text(size=5), 
+        legend.direction = "horizontal",
+        legend.text = element_text(size = 4), 
+        legend.title = element_text(size = 6),
+        legend.key.width = unit(0.1, "in"),
+        legend.position = c(0.0, -0.1)
+) +
+    facet_wrap(vars(modelF), scales="free_y")
+```
+
+```{r}
+Tab.All <- Tab.All |> mutate(PCPa = round(PCP, digits=2))
+Tab.All$PCPa1 <- as.character(Tab.All$PCPa)
+Tab.All <- Tab.All |> mutate(PCPa1 = case_when(PCPa1 == "0" ~ "<0.01", .default = PCPa1))
+FF3 <- ggplot(Tab.All) + 
+  aes(y=fct_rev(Outcome), x=name, fill=PCP, facet=modelF) + 
+  geom_tile(aes(color=Dist.Match), lwd=0.2, width=0.95, height=0.95) + 
+  scale_color_manual(values = c("white","black")) + 
+  guides(color="none") +
+  scale_fill_gradientn(colors = my_greys) + 
+  labs(x="Known Distribution", y="Model Outcome") +
+  geom_text(aes(label=PCPa1), size=2, color="black") +
+  labs(caption="Values are row proportions \n Outlined cells isolate row/column matches", title="Known Distributions and Model Responses", fill="Row. Pct.") + 
+  theme_minimal() + 
+  theme(legend.location = "plot", 
+        panel.spacing = unit(0.5, "lines"), 
+        plot.label= element_text(size=5), 
+        plot.title=element_text(size=10, face = "bold", hjust=0),
+        plot.title.position = "plot", 
+        axis.text.x = element_text(size=8, angle=30), 
+        axis.text.y = element_text(size=5), 
+        legend.direction = "horizontal",
+        legend.text = element_text(size = 4), 
+        legend.title = element_text(size = 6),
+        legend.key.width = unit(0.1, "in"),
+        legend.position = c(0.0, -0.1)
+) +
+    facet_wrap(vars(modelF), scales="free_y")
+ggsave(FF3, filename="FinalFigureFreeY-v2.jpeg", width=6.5, height=6.5, dpi=900, units="in")
+```
+
+
 # References
 
 ```{r}
