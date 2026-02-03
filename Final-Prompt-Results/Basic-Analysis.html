@@ -134,25 +134,26 @@ div.csl-indent {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span><span class="sc">$</span>Fresh.Outcome <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">196000</span>) <span class="sc">%&gt;%</span> <span class="fu">map_chr</span>(., <span class="cf">function</span>(x) {Complete.Data.<span class="fl">01.2026</span><span class="sc">$</span>response<span class="sc">$</span>body<span class="sc">$</span>choices[[x]]<span class="sc">$</span>message<span class="sc">$</span>content})</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span><span class="sc">$</span>model <span class="ot">&lt;-</span> Complete.Data.<span class="fl">01.2026</span><span class="sc">$</span>body<span class="sc">$</span>model</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span> <span class="sc">|&gt;</span> <span class="fu">group_by</span>(Fresh.Outcome, model) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> model, <span class="at">values_from =</span> Count) <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span> <span class="ot">&lt;-</span> Complete.Data.<span class="fl">01.2026</span> <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">modelF =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'gpt-4-turbo-2024-04-09'</span>, <span class="st">'gpt-4-0613'</span>, <span class="st">'gpt-4o-2024-08-06'</span>, <span class="st">'gpt-5.2-2025-12-11'</span>)))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Complete.Data.<span class="fl">01.2026</span> <span class="sc">|&gt;</span> <span class="fu">group_by</span>(Fresh.Outcome, model) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> model, <span class="at">values_from =</span> Count) <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="dsyldgvztg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dsyldgvztg table {
+<div id="njbbmnpale" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#njbbmnpale table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dsyldgvztg thead, #dsyldgvztg tbody, #dsyldgvztg tfoot, #dsyldgvztg tr, #dsyldgvztg td, #dsyldgvztg th {
+#njbbmnpale thead, #njbbmnpale tbody, #njbbmnpale tfoot, #njbbmnpale tr, #njbbmnpale td, #njbbmnpale th {
   border-style: none;
 }
 
-#dsyldgvztg p {
+#njbbmnpale p {
   margin: 0;
   padding: 0;
 }
 
-#dsyldgvztg .gt_table {
+#njbbmnpale .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -178,12 +179,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_caption {
+#njbbmnpale .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dsyldgvztg .gt_title {
+#njbbmnpale .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -195,7 +196,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#dsyldgvztg .gt_subtitle {
+#njbbmnpale .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -207,7 +208,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#dsyldgvztg .gt_heading {
+#njbbmnpale .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -219,13 +220,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_bottom_border {
+#njbbmnpale .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_col_headings {
+#njbbmnpale .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -240,7 +241,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_col_heading {
+#njbbmnpale .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -260,7 +261,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dsyldgvztg .gt_column_spanner_outer {
+#njbbmnpale .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -272,15 +273,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#dsyldgvztg .gt_column_spanner_outer:first-child {
+#njbbmnpale .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dsyldgvztg .gt_column_spanner_outer:last-child {
+#njbbmnpale .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dsyldgvztg .gt_column_spanner {
+#njbbmnpale .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -292,11 +293,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#dsyldgvztg .gt_spanner_row {
+#njbbmnpale .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dsyldgvztg .gt_group_heading {
+#njbbmnpale .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -322,7 +323,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#dsyldgvztg .gt_empty_group_heading {
+#njbbmnpale .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -337,15 +338,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#dsyldgvztg .gt_from_md > :first-child {
+#njbbmnpale .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dsyldgvztg .gt_from_md > :last-child {
+#njbbmnpale .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dsyldgvztg .gt_row {
+#njbbmnpale .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -364,7 +365,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dsyldgvztg .gt_stub {
+#njbbmnpale .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -377,7 +378,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dsyldgvztg .gt_stub_row_group {
+#njbbmnpale .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -391,15 +392,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#dsyldgvztg .gt_row_group_first td {
+#njbbmnpale .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dsyldgvztg .gt_row_group_first th {
+#njbbmnpale .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dsyldgvztg .gt_summary_row {
+#njbbmnpale .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -409,16 +410,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dsyldgvztg .gt_first_summary_row {
+#njbbmnpale .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_first_summary_row.thick {
+#njbbmnpale .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dsyldgvztg .gt_last_summary_row {
+#njbbmnpale .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -428,7 +429,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_grand_summary_row {
+#njbbmnpale .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -438,7 +439,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dsyldgvztg .gt_first_grand_summary_row {
+#njbbmnpale .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -448,7 +449,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_last_grand_summary_row_top {
+#njbbmnpale .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -458,11 +459,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_striped {
+#njbbmnpale .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dsyldgvztg .gt_table_body {
+#njbbmnpale .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -471,7 +472,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_footnotes {
+#njbbmnpale .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -485,7 +486,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_footnote {
+#njbbmnpale .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -494,7 +495,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dsyldgvztg .gt_sourcenotes {
+#njbbmnpale .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -508,7 +509,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dsyldgvztg .gt_sourcenote {
+#njbbmnpale .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -516,72 +517,72 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dsyldgvztg .gt_left {
+#njbbmnpale .gt_left {
   text-align: left;
 }
 
-#dsyldgvztg .gt_center {
+#njbbmnpale .gt_center {
   text-align: center;
 }
 
-#dsyldgvztg .gt_right {
+#njbbmnpale .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dsyldgvztg .gt_font_normal {
+#njbbmnpale .gt_font_normal {
   font-weight: normal;
 }
 
-#dsyldgvztg .gt_font_bold {
+#njbbmnpale .gt_font_bold {
   font-weight: bold;
 }
 
-#dsyldgvztg .gt_font_italic {
+#njbbmnpale .gt_font_italic {
   font-style: italic;
 }
 
-#dsyldgvztg .gt_super {
+#njbbmnpale .gt_super {
   font-size: 65%;
 }
 
-#dsyldgvztg .gt_footnote_marks {
+#njbbmnpale .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dsyldgvztg .gt_asterisk {
+#njbbmnpale .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dsyldgvztg .gt_indent_1 {
+#njbbmnpale .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dsyldgvztg .gt_indent_2 {
+#njbbmnpale .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dsyldgvztg .gt_indent_3 {
+#njbbmnpale .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dsyldgvztg .gt_indent_4 {
+#njbbmnpale .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dsyldgvztg .gt_indent_5 {
+#njbbmnpale .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dsyldgvztg .katex-display {
+#njbbmnpale .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dsyldgvztg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#njbbmnpale div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1045,17 +1046,18 @@ div.csl-indent {
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"categorical"</span>,<span class="st">"Categorical"</span>) <span class="sc">~</span> <span class="st">"Categorical"</span>,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"exponential"</span>,<span class="st">"Exponential"</span>) <span class="sc">~</span> <span class="st">"Exponential"</span>,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"beta"</span>,<span class="st">"Beta"</span>) <span class="sc">~</span> <span class="st">"Beta"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"exgaussian"</span>,<span class="st">"ExGaussian"</span>) <span class="sc">~</span> <span class="st">"ExGaussian"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Normal"</span>,<span class="st">"normal"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"binomial"</span>,<span class="st">"Binomial"</span>) <span class="sc">~</span> <span class="st">"Binomial"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"geometric"</span>,<span class="st">"Geometric"</span>) <span class="sc">~</span> <span class="st">"Geometric"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"gamma"</span>,<span class="st">"Gamma"</span>) <span class="sc">~</span> <span class="st">"Gamma"</span>,                              <span class="fu">c</span>(<span class="st">"Lognormal"</span>,<span class="st">"lognormal"</span>,<span class="st">"Log-Normal"</span>,<span class="st">"Log-normal"</span>) <span class="sc">~</span> <span class="st">"Lognormal"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"NegativeBinomial"</span>,<span class="st">"Negative Binomial"</span>,<span class="st">"NegBinomial"</span>,<span class="st">"Negbinomial"</span>,<span class="st">"negativebinomial"</span>,<span class="st">"Negativebinomial"</span>) <span class="sc">~</span> <span class="st">"Negative Binomial"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Skewed"</span>,<span class="st">"Skewnormal"</span>,<span class="st">"SkewNormal"</span>,<span class="st">"Skew-normal"</span>,<span class="st">"Skew-right"</span>,<span class="st">"Skewness"</span>,<span class="st">"skewnormal"</span>)<span class="sc">~</span> <span class="st">"Skewed"</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Student"</span>,<span class="st">"Studentt"</span>,<span class="st">"Studentt"</span>,<span class="st">"t"</span>)<span class="sc">~</span> <span class="st">"Student's t"</span>, <span class="fu">c</span>(<span class="st">"Uniform"</span>,<span class="st">"uniform"</span>)<span class="sc">~</span> <span class="st">"Uniform"</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"ZeroInflatedPoisson"</span>,<span class="st">"ZeroinflatedPoisson"</span>,<span class="st">"Zero-inflated"</span>,<span class="st">"ZIP"</span>)<span class="sc">~</span> <span class="st">"ZIP"</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.default =</span> Fresh.Outcome))</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Complete.Data |&gt; group_by(Outcome, model) |&gt; summarise(Count = n()) |&gt;  ungroup() |&gt; pivot_wider(names_from = model, values_from = Count) |&gt; gt()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Chisquare"</span>,<span class="st">"Chi-Square"</span>) <span class="sc">~</span> <span class="st">"Chi-square"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"exgaussian"</span>,<span class="st">"ExGaussian"</span>) <span class="sc">~</span> <span class="st">"ExGaussian"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Normal"</span>,<span class="st">"normal"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"binomial"</span>,<span class="st">"Binomial"</span>) <span class="sc">~</span> <span class="st">"Binomial"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"geometric"</span>,<span class="st">"Geometric"</span>) <span class="sc">~</span> <span class="st">"Geometric"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"gamma"</span>,<span class="st">"Gamma"</span>) <span class="sc">~</span> <span class="st">"Gamma"</span>,                              <span class="fu">c</span>(<span class="st">"Lognormal"</span>,<span class="st">"lognormal"</span>,<span class="st">"Log-Normal"</span>,<span class="st">"Log-normal"</span>) <span class="sc">~</span> <span class="st">"Lognormal"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"NegativeBinomial"</span>,<span class="st">"Negative Binomial"</span>,<span class="st">"NegBinomial"</span>,<span class="st">"Negbinomial"</span>,<span class="st">"negativebinomial"</span>,<span class="st">"Negativebinomial"</span>) <span class="sc">~</span> <span class="st">"Negative Binomial"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Skewed"</span>,<span class="st">"Skewnormal"</span>,<span class="st">"SkewNormal"</span>,<span class="st">"Skew-normal"</span>,<span class="st">"Skew-right"</span>,<span class="st">"Skewness"</span>,<span class="st">"skewnormal"</span>)<span class="sc">~</span> <span class="st">"Skewed"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"Student"</span>,<span class="st">"Studentt"</span>,<span class="st">"Studentt"</span>,<span class="st">"t"</span>)<span class="sc">~</span> <span class="st">"Student's t"</span>, <span class="fu">c</span>(<span class="st">"Uniform"</span>,<span class="st">"uniform"</span>)<span class="sc">~</span> <span class="st">"Uniform"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">"ZeroInflatedPoisson"</span>,<span class="st">"ZeroinflatedPoisson"</span>,<span class="st">"Zero-inflated"</span>,<span class="st">"ZIP"</span>)<span class="sc">~</span> <span class="st">"ZIP"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.default =</span> Fresh.Outcome))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Complete.Data |&gt; group_by(Outcome, model) |&gt; summarise(Count = n()) |&gt;  ungroup() |&gt; pivot_wider(names_from = model, values_from = Count) |&gt; gt()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="the-discrete-tag" class="level2">
@@ -1073,7 +1075,7 @@ div.csl-indent {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>PCPTab <span class="ot">&lt;-</span> <span class="fu">left_join</span>(PCP, MNTotals) <span class="sc">|&gt;</span> <span class="fu">filter</span>(Correct<span class="sc">==</span><span class="st">"Correct"</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">PCP =</span> count <span class="sc">/</span> Total) <span class="sc">|&gt;</span> <span class="fu">select</span>(model, name, PCP)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>PCPTab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 28 × 3
+<pre><code># A tibble: 29 × 3
    model                  name          PCP
    &lt;chr&gt;                  &lt;chr&gt;       &lt;dbl&gt;
  1 gpt-4-0613             Beta      0.0028 
@@ -1086,7 +1088,7 @@ div.csl-indent {
  8 gpt-4-turbo-2024-04-09 Binomial  0.104  
  9 gpt-4-turbo-2024-04-09 Gamma     0.044  
 10 gpt-4-turbo-2024-04-09 Lognormal 0.857  
-# ℹ 18 more rows</code></pre>
+# ℹ 19 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -1382,11 +1384,126 @@ div.csl-indent {
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply on original plot</span></span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="fu">addSmallLegend</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="black-and-white" class="level2">
+<h2 class="anchored" data-anchor-id="black-and-white">Black and White</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Tab.All <span class="sc">|&gt;</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>model) <span class="sc">+</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">palette =</span> <span class="st">"Greys"</span>) <span class="sc">+</span> </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"True Distribution"</span>, <span class="at">x=</span><span class="st">"Model Outcome"</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">2</span>)), <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">caption=</span><span class="st">"Values are row percents"</span>, <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>), <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>), <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">7</span>)) <span class="sc">+</span> </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>, <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(model))  <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>), </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">"in"</span>),</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.075</span>, <span class="sc">-</span><span class="fl">0.075</span>)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Basic-Analysis_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="5400"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-figure" class="level2">
+<h2 class="anchored" data-anchor-id="final-figure">Final Figure</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Tab.All <span class="sc">|&gt;</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>model) <span class="sc">+</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_continuous</span>(<span class="at">palette =</span> <span class="st">"Greys"</span>) <span class="sc">+</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Distribution"</span>, <span class="at">y=</span><span class="st">"Model Outcome"</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">2</span>)), <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">caption=</span><span class="st">"Values are row percents"</span>, <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>), <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>)) <span class="sc">+</span> </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>, <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(model))  <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>), </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.06</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="ot">-&gt;</span> FinalFig</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(FinalFig, <span class="at">dpi=</span><span class="dv">900</span>, <span class="at">device =</span> <span class="st">"pdf"</span>, <span class="at">filename =</span> <span class="st">"./FinalFigure.pdf"</span>, <span class="at">width=</span><span class="fl">6.5</span>, <span class="at">height=</span><span class="fl">5.5</span>, <span class="at">units =</span> <span class="st">"in"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>my_greys <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"grey100"</span>, <span class="st">"grey30"</span>))(<span class="dv">60</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rasterpdf)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>Tab.All <span class="ot">&lt;-</span> Tab.All <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">modelF =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'gpt-4-turbo-2024-04-09'</span>, <span class="st">'gpt-4-0613'</span>, <span class="st">'gpt-4o-2024-08-06'</span>, <span class="st">'gpt-5.2-2025-12-11'</span>))) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Dist.Match =</span> (name<span class="sc">==</span>Outcome))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">raster_pdf</span>(<span class="st">"./fully_rasterized_plot.pdf"</span>, <span class="at">width =</span> <span class="fl">6.5</span>, <span class="at">height =</span> <span class="fl">6.5</span>, <span class="at">res =</span> <span class="dv">900</span>) </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(Tab.All) <span class="sc">+</span> </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>modelF) <span class="sc">+</span> </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">color=</span>Dist.Match), <span class="at">alpha=</span><span class="fl">0.4</span>, <span class="at">lwd=</span><span class="fl">0.2</span>, <span class="at">width=</span><span class="fl">0.95</span>, <span class="at">height=</span><span class="fl">0.95</span>) <span class="sc">+</span> </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>)) <span class="sc">+</span> </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> my_greys) <span class="sc">+</span> </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Distribution"</span>, <span class="at">y=</span><span class="st">"Model Outcome"</span>) <span class="sc">+</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">2</span>)), <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption=</span><span class="st">"Values are row percents"</span>, <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span> </span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, </span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>),</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), </span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>), </span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(modelF), <span class="at">scales=</span><span class="st">"free_y"</span>)</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">raster_pdf</span>(<span class="st">"./fully_rasterized_plot-FullY.pdf"</span>, <span class="at">width =</span> <span class="fl">6.5</span>, <span class="at">height =</span> <span class="fl">6.5</span>, <span class="at">res =</span> <span class="dv">900</span>) </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(Tab.All) <span class="sc">+</span> </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_rev</span>(Outcome), <span class="at">x=</span>name, <span class="at">fill=</span>PCP, <span class="at">facet=</span>modelF) <span class="sc">+</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">color=</span>Dist.Match), <span class="at">alpha=</span><span class="fl">0.4</span>, <span class="at">lwd=</span><span class="fl">0.2</span>, <span class="at">width=</span><span class="fl">0.95</span>, <span class="at">height=</span><span class="fl">0.95</span>) <span class="sc">+</span>   <span class="fu">scale_fill_continuous</span>(<span class="at">palette =</span> <span class="st">"Greys"</span>) <span class="sc">+</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>)) <span class="sc">+</span> </span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Distribution"</span>, </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Model Outcome"</span>, </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Values are row percents"</span>, </span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Known Distributions and Model Responses"</span>, </span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Row. Pct."</span>) <span class="sc">+</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(PCP, <span class="at">digits=</span><span class="dv">2</span>)), <span class="at">size=</span><span class="fl">1.4</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.location =</span> <span class="st">"plot"</span>, </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.label=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust=</span><span class="dv">0</span>),</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">angle=</span><span class="dv">30</span>), </span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), </span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>), </span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"in"</span>),</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(modelF))</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
@@ -1402,16 +1519,19 @@ Firke, Sam. 2024. <em>Janitor: Simple Tools for Examining and Cleaning Dirty Dat
 Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times Made Easy with <span class="nocase">lubridate</span>.”</span> <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="https://www.jstatsoft.org/v40/i03/">https://www.jstatsoft.org/v40/i03/</a>.
 </div>
 <div id="ref-R-gt" class="csl-entry" role="listitem">
-Iannone, Richard, Joe Cheng, Barret Schloerke, Ellis Hughes, Alexandra Lauer, JooYoung Seo, Ken Brevoort, and Olivier Roy. 2025. <em>Gt: Easily Create Presentation-Ready Display Tables</em>. <a href="https://gt.rstudio.com">https://gt.rstudio.com</a>.
+Iannone, Richard, Joe Cheng, Barret Schloerke, Shannon Haughton, Ellis Hughes, Alexandra Lauer, Romain François, JooYoung Seo, Ken Brevoort, and Olivier Roy. 2025. <em>Gt: Easily Create Presentation-Ready Display Tables</em>. <a href="https://gt.rstudio.com">https://gt.rstudio.com</a>.
 </div>
 <div id="ref-R-gtExtras" class="csl-entry" role="listitem">
 Mock, Thomas. 2025. <em>gtExtras: Extending Gt for Beautiful HTML Tables</em>. <a href="https://github.com/jthomasmock/gtExtras">https://github.com/jthomasmock/gtExtras</a>.
 </div>
 <div id="ref-R-tibble" class="csl-entry" role="listitem">
-Müller, Kirill, and Hadley Wickham. 2025. <em>Tibble: Simple Data Frames</em>. <a href="https://tibble.tidyverse.org/">https://tibble.tidyverse.org/</a>.
+Müller, Kirill, and Hadley Wickham. 2026. <em>Tibble: Simple Data Frames</em>. <a href="https://tibble.tidyverse.org/">https://tibble.tidyverse.org/</a>.
 </div>
 <div id="ref-R-patchwork" class="csl-entry" role="listitem">
 Pedersen, Thomas Lin. 2025. <em>Patchwork: The Composer of Plots</em>. <a href="https://patchwork.data-imaginist.com">https://patchwork.data-imaginist.com</a>.
+</div>
+<div id="ref-R-rasterpdf" class="csl-entry" role="listitem">
+Scheinin, Ilari. 2019. <em>Rasterpdf: Plot Raster Graphics in PDF Files</em>. <a href="https://ilarischeinin.github.io/rasterpdf">https://ilarischeinin.github.io/rasterpdf</a>.
 </div>
 <div id="ref-R-lubridate" class="csl-entry" role="listitem">
 Spinu, Vitalie, Garrett Grolemund, and Hadley Wickham. 2024. <em>Lubridate: Make Dealing with Dates a Little Easier</em>. <a href="https://lubridate.tidyverse.org">https://lubridate.tidyverse.org</a>.
@@ -1422,14 +1542,14 @@ Urbanek, Simon, and Jeffrey Horner. 2025. <em>Cairo: R Graphics Device Using Cai
 <div id="ref-ggplot22016" class="csl-entry" role="listitem">
 Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
 </div>
-<div id="ref-R-forcats" class="csl-entry" role="listitem">
-———. 2023a. <em>Forcats: Tools for Working with Categorical Variables (Factors)</em>. <a href="https://forcats.tidyverse.org/">https://forcats.tidyverse.org/</a>.
-</div>
 <div id="ref-R-tidyverse" class="csl-entry" role="listitem">
-———. 2023b. <em>Tidyverse: Easily Install and Load the Tidyverse</em>. <a href="https://tidyverse.tidyverse.org">https://tidyverse.tidyverse.org</a>.
+———. 2023. <em>Tidyverse: Easily Install and Load the Tidyverse</em>. <a href="https://tidyverse.tidyverse.org">https://tidyverse.tidyverse.org</a>.
+</div>
+<div id="ref-R-forcats" class="csl-entry" role="listitem">
+———. 2025a. <em>Forcats: Tools for Working with Categorical Variables (Factors)</em>. <a href="https://forcats.tidyverse.org/">https://forcats.tidyverse.org/</a>.
 </div>
 <div id="ref-R-stringr" class="csl-entry" role="listitem">
-———. 2025. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://stringr.tidyverse.org">https://stringr.tidyverse.org</a>.
+———. 2025b. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://stringr.tidyverse.org">https://stringr.tidyverse.org</a>.
 </div>
 <div id="ref-tidyverse2019" class="csl-entry" role="listitem">
 Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
@@ -1441,16 +1561,16 @@ Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takaha
 Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://dplyr.tidyverse.org">https://dplyr.tidyverse.org</a>.
 </div>
 <div id="ref-R-purrr" class="csl-entry" role="listitem">
-Wickham, Hadley, and Lionel Henry. 2025. <em>Purrr: Functional Programming Tools</em>. <a href="https://purrr.tidyverse.org/">https://purrr.tidyverse.org/</a>.
+Wickham, Hadley, and Lionel Henry. 2026. <em>Purrr: Functional Programming Tools</em>. <a href="https://purrr.tidyverse.org/">https://purrr.tidyverse.org/</a>.
 </div>
 <div id="ref-R-svglite" class="csl-entry" role="listitem">
 Wickham, Hadley, Lionel Henry, Thomas Lin Pedersen, T Jake Luciani, Matthieu Decorde, and Vaudor Lise. 2025. <em>Svglite: An SVG Graphics Device</em>. <a href="https://svglite.r-lib.org">https://svglite.r-lib.org</a>.
 </div>
 <div id="ref-R-readr" class="csl-entry" role="listitem">
-Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2024. <em>Readr: Read Rectangular Text Data</em>. <a href="https://readr.tidyverse.org">https://readr.tidyverse.org</a>.
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2025. <em>Readr: Read Rectangular Text Data</em>. <a href="https://readr.tidyverse.org">https://readr.tidyverse.org</a>.
 </div>
 <div id="ref-R-tidyr" class="csl-entry" role="listitem">
-Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2024. <em>Tidyr: Tidy Messy Data</em>. <a href="https://tidyr.tidyverse.org">https://tidyr.tidyverse.org</a>.
+Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2025. <em>Tidyr: Tidy Messy Data</em>. <a href="https://tidyr.tidyverse.org">https://tidyr.tidyverse.org</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
